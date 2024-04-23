@@ -55,85 +55,88 @@ function App() {
           Send Score
         </button>
 
-        <div>
-          <section className=" py-20 lg:py-[120px]">
-            <div className="container">
-              <div className="flex flex-wrap -mx-4">
-                <div className="w-full px-4">
-                  <div className="max-w-full overflow-x-auto">
-                    <table className="table-auto w-full">
-                      <thead>
-                        <tr className="bg-black text-center">
-                          <th
-                            className="
-                  w-1/6
-                  min-w-[160px]
-                  text-lg
-                  font-semibold
-                 text-white
-                  py-4
-                  lg:py-7
-                  px-3
-                  lg:px-4
-                  border-l border-transparent
-                  "
-                          >
-                            Name
-                          </th>
-                          <th
-                            className="
-                  w-1/6
-                  min-w-[160px]
-                  text-lg
-                  font-semibold
-                  text-white
-                  py-4
-                  lg:py-7
-                  px-3
-                  lg:px-4
-                  "
-                          >
-                            Score
-                          </th>
-                        </tr>
-                      </thead>
-                      {total?.map((s, i) => (
-                        <tbody key={i}>
-                          <tr>
-                            <td
-                              className="
-                  text-center text-dark
-                  font-medium
-                  text-base
-                  py-5
-                  px-2
-                  border-b border-l border-[#E8E8E8]
-                  "
-                            >
-                              {s?.name}
-                            </td>
-                            <td
-                              className="
-                  text-center text-dark
-                  font-medium
-                  text-base
-                  py-5
-                  px-2
-                  border-b border-[#E8E8E8]
-                  "
-                            >
-                              {s?.score}
-                            </td>
-                          </tr>
-                        </tbody>
-                      ))}
-                    </table>
+        {total?.length === 0 ||
+          (total && (
+            <div>
+              <section className=" py-20 lg:py-[120px]">
+                <div className="container">
+                  <div className="flex flex-wrap -mx-4">
+                    <div className="w-full px-4">
+                      <div className="max-w-full overflow-x-auto">
+                        <table className="table-auto w-full">
+                          <thead>
+                            <tr className="bg-black text-center">
+                              <th
+                                className="
+           w-1/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+          text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           border-l border-transparent
+           "
+                              >
+                                Name
+                              </th>
+                              <th
+                                className="
+           w-1/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+                              >
+                                Score
+                              </th>
+                            </tr>
+                          </thead>
+                          {total?.map((s, i) => (
+                            <tbody key={i}>
+                              <tr>
+                                <td
+                                  className="
+           text-center text-dark
+           font-medium
+           text-base
+           py-5
+           px-2
+           border-b border-l border-[#E8E8E8]
+           "
+                                >
+                                  {s?.name}
+                                </td>
+                                <td
+                                  className="
+           text-center text-dark
+           font-medium
+           text-base
+           py-5
+           px-2
+           border-b border-[#E8E8E8]
+           "
+                                >
+                                  {s?.score}
+                                </td>
+                              </tr>
+                            </tbody>
+                          ))}
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
-          </section>
-        </div>
+          ))}
       </div>
     </>
   );

@@ -2,16 +2,29 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 const httpServer = createServer();
-const socket = new Server(httpServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
 
-socket.on("connection", (socket) => {
+let scores = [];
+io.on("connection", (socket) => {
   //   console.log(socket);
   console.log("connected");
+
+  socket.on("score", (data) => {
+    scores?.push({ ...data, id: socket.id });
+
+    socket.emit("playStores", scores);
+
+    setInterval(() => {
+      socket.emit("playStores", scores);
+    }, 5000);
+
+    console.log(scores);
+  });
 });
 
 httpServer.listen(3000, () => {

@@ -10,6 +10,8 @@ const io = new Server(httpServer, {
 });
 
 let scores = [];
+let users = [];
+
 io.on("connection", (socket) => {
   //   console.log(socket);
   console.log("connected");
@@ -26,7 +28,14 @@ io.on("connection", (socket) => {
     console.log(scores);
   });
 
-  socket.on("crud", (data) => {});
+  socket.on("crud", (data) => {
+    users?.push({ ...data, id: socket.id });
+    socket.emit("crudStores", users);
+    setInterval(() => {
+      socket.emit("crudStores", users);
+    }, 5000);
+    console.log(data);
+  });
 });
 
 httpServer.listen(3000, () => {

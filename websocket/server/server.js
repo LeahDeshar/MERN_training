@@ -2,19 +2,9 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const { mongoose } = require("mongoose");
 const User = require("./models/user");
+const { connectDB } = require("./db/config");
 
-// Connect to MongoDB
-async function connection() {
-  try {
-    await mongoose.connect(
-      "mongodb+srv://leahdesar:YIQsgaVrZBJhGUIL@cluster0.cnco2vy.mongodb.net/crudSocket"
-    );
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.log(error);
-  }
-}
-connection();
+connectDB();
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
@@ -30,7 +20,6 @@ let scores = [];
 // let users = [];
 
 io.on("connection", (socket) => {
-  //   console.log(socket);
   console.log("connected");
 
   socket.on("score", (data) => {

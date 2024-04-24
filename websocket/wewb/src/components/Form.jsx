@@ -69,12 +69,23 @@ export default function Form() {
           </form>
         </div>
       </div>
-      <Table totalUser={totalUser} deleteUser={deleteUser} />
+      <Table
+        totalUser={totalUser}
+        setTotalUser={setTotalUser}
+        deleteUser={deleteUser}
+        setUser={setUser}
+      />
     </div>
   );
 }
 
-export function Table({ totalUser, deleteUser }) {
+export function Table({ totalUser, deleteUser, setUser, setTotalUser }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [updateUser, setUpdateUser] = useState(null);
+  const handleOpenModal = (users) => {
+    setUpdateUser(users);
+    setIsOpen(!isOpen);
+  };
   console.log("passing data", totalUser);
   return (
     <div className="flex flex-col">
@@ -148,7 +159,7 @@ export function Table({ totalUser, deleteUser }) {
                           />
                         </svg>
                       </button>
-                      <button>
+                      <button onClick={() => handleOpenModal(users)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -169,6 +180,86 @@ export function Table({ totalUser, deleteUser }) {
                 </tbody>
               ))}
             </table>
+          </div>
+        </div>
+      </div>
+      {isOpen && (
+        <Modal
+          setTotalUser={setTotalUser}
+          setUser={setUser}
+          setIsOpen={setIsOpen}
+          updateUser={updateUser}
+        />
+      )}
+    </div>
+  );
+}
+
+export function Modal({ setTotalUser, setIsOpen, updateUser }) {
+  const socket = io("http://localhost:3000");
+  const [newUser, setNewUser] = useState({});
+  if (updateUser) {
+    console.log("update", updateUser);
+  }
+
+  function updateUsers() {
+    setIsOpen(false);
+    // socket.emit("update", updateUser);
+
+    // socket.on("crudStores", (data) => {
+    //   console.log("total", data);
+    //   setTotalUser(data);
+    // });
+  }
+  //   function handleInput(event) {
+  //     let { name, value } = event.target;
+  //     let currObj = { [name]: value };
+  //     setNewUser((prev) => ({ ...prev, ...currObj }));
+  //   }
+  function handleInput(event) {
+    let { name, value } = event.target;
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  }
+  return (
+    <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10">
+      <div className="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white">
+        <div className="w-full">
+          <div className="m-8 my-20 max-w-[400px] mx-auto">
+            <div className="mb-8">
+              <h1 className="mb-4 text-3xl font-extrabold">Update Operation</h1>
+            </div>
+            <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+              <div className="mb-4 flex flex-col gap-6">
+                <Input
+                  name="Name"
+                  handleInput={handleInput}
+                  //   value={updateUser?.Name || newUser.Name}
+                />
+                <Input
+                  name={"Email"}
+                  handleInput={handleInput}
+                  value={updateUser?.Email}
+                />
+                <Input
+                  name={"Password"}
+                  value={updateUser?.Password}
+                  handleInput={handleInput}
+                  type={true}
+                />
+              </div>
+
+              <button
+                className="mt-6 block w-full select-none rounded-lg bg-pink-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                type="button"
+                data-ripple-light="true"
+                onClick={updateUsers}
+              >
+                Update Account
+              </button>
+            </form>
           </div>
         </div>
       </div>

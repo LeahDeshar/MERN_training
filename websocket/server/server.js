@@ -45,6 +45,14 @@ io.on("connection", (socket) => {
       socket.emit("crudStores", users);
     }, 5000);
   });
+
+  // Update
+  socket.on("update", (updatedUser) => {
+    users = users.map((user) =>
+      user.id === updatedUser.id ? updatedUser : user
+    );
+    io.emit("usersUpdated", users);
+  });
 });
 
 httpServer.listen(3000, () => {

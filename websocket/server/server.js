@@ -25,6 +25,8 @@ io.on("connection", (socket) => {
 
     console.log(scores);
   });
+
+  socket.on("crud", (data) => {});
 });
 
 httpServer.listen(3000, () => {

@@ -15,7 +15,10 @@ export default function Form() {
 
   useEffect(() => {
     connectionSocket();
-    return () => {};
+    socket.emit("readUsers");
+    socket.on("read", (data) => {
+      setTotalUser(data);
+    });
   }, []);
 
   function handleInput(event) {
@@ -23,7 +26,6 @@ export default function Form() {
     let currObj = { [name]: value };
     setUser((prev) => ({ ...prev, ...currObj }));
   }
-  console.log(user);
   const resetForm = () => {
     setUser({ Name: "", Email: "", Password: "" });
   };
@@ -31,22 +33,17 @@ export default function Form() {
     socket.emit("createRead", user);
 
     socket.on("crudStores", (data) => {
-      console.log("total", data);
       setTotalUser(data);
     });
-    // clear the input value
     resetForm();
   }
 
   function deleteUser(id) {
-    console.log("received id", id);
     socket.emit("delete", id);
     socket.on("crudStores", (data) => {
-      console.log("total", data);
       setTotalUser(data);
     });
   }
-  console.log("totalUser", totalUser);
 
   return (
     <div className="container mx-10">

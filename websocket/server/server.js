@@ -50,7 +50,6 @@ io.on("connection", (socket) => {
       const user = new User(data);
       await user.save();
       const allUsers = await User.find();
-      console.log("new user created", allUsers);
 
       // users?.push({ ...data, id: socket.id });
 
@@ -75,7 +74,6 @@ io.on("connection", (socket) => {
       // setInterval(() => {
       //   socket.emit("crudStores", allUsers);
       // }, 5000);
-      console.log("User deleted with id:", id);
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -84,6 +82,15 @@ io.on("connection", (socket) => {
     // setInterval(() => {
     //   socket.emit("crudStores", users);
     // }, 5000);
+  });
+
+  socket.on("readUsers", async () => {
+    try {
+      const allUsers = await User.find();
+      socket.emit("read", allUsers);
+    } catch (error) {
+      console.error("Error reading users:", error);
+    }
   });
 
   // Update

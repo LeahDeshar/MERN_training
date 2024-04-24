@@ -1,7 +1,29 @@
 import Input from "./Input";
+import { useEffect, useState } from "react";
 // import {Delete} '@heroicons/react'
+import io from "socket.io-client";
 
 export default function Form() {
+  const socket = io("http://localhost:3000");
+  const [user, setUser] = useState({});
+
+  function connectionSocket() {
+    socket.on("connection", (socket) => {
+      console.log("client", socket);
+    });
+  }
+
+  useEffect(() => {
+    connectionSocket();
+    return () => {};
+  }, []);
+
+  function handleInput(event) {
+    let { name, value } = event.target;
+    let currObj = { [name]: value };
+    setUser((prev) => ({ ...prev, ...currObj }));
+  }
+  console.log(user);
   return (
     <div className="container mx-10">
       <div className="flex  mt-10">
@@ -12,9 +34,9 @@ export default function Form() {
 
           <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
             <div className="mb-4 flex flex-col gap-6">
-              <Input name={"Name"} />
-              <Input name={"Email"} />
-              <Input name={"Password"} type={true} />
+              <Input name="Name" handleInput={handleInput} />
+              <Input name={"Email"} handleInput={handleInput} />
+              <Input name={"Password"} handleInput={handleInput} type={true} />
             </div>
 
             <button

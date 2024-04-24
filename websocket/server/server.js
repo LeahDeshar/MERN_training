@@ -5,7 +5,7 @@ const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
-    methods: ["GET", "POST", "DELETE"],
+    methods: ["GET", "POST", "DELETE", "UPDATE"],
   },
 });
 
@@ -52,6 +52,10 @@ io.on("connection", (socket) => {
       user.id === updatedUser.id ? updatedUser : user
     );
     io.emit("usersUpdated", users);
+    socket.emit("crudStores", users);
+    setInterval(() => {
+      socket.emit("crudStores", users);
+    }, 5000);
   });
 });
 

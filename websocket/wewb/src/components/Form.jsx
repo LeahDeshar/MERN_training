@@ -24,7 +24,9 @@ export default function Form() {
     setUser((prev) => ({ ...prev, ...currObj }));
   }
   console.log(user);
-
+  const resetForm = () => {
+    setUser({ Name: "", Email: "", Password: "" });
+  };
   function sendUsers() {
     socket.emit("createRead", user);
 
@@ -32,6 +34,8 @@ export default function Form() {
       console.log("total", data);
       setTotalUser(data);
     });
+    // clear the input value
+    resetForm();
   }
 
   function deleteUser(id) {
@@ -53,9 +57,18 @@ export default function Form() {
 
           <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
             <div className="mb-4 flex flex-col gap-6">
-              <Input name="Name" handleInput={handleInput} />
-              <Input name={"Email"} handleInput={handleInput} />
-              <Input name={"Password"} handleInput={handleInput} type={true} />
+              <Input name="Name" handleInput={handleInput} value={user.Name} />
+              <Input
+                name={"Email"}
+                handleInput={handleInput}
+                value={user.Email}
+              />
+              <Input
+                name={"Password"}
+                handleInput={handleInput}
+                type={true}
+                value={user.Password}
+              />
             </div>
 
             <button
@@ -197,25 +210,21 @@ export function Table({ totalUser, deleteUser, setUser, setTotalUser }) {
 
 export function Modal({ setTotalUser, setIsOpen, updateUser }) {
   const socket = io("http://localhost:3000");
-  const [newUser, setNewUser] = useState({});
-  if (updateUser) {
-    console.log("update", updateUser);
+  const [newUser, setNewUser] = useState(updateUser || {});
+  if (newUser) {
+    console.log("update", newUser);
   }
 
   function updateUsers() {
     setIsOpen(false);
-    // socket.emit("update", updateUser);
+    socket.emit("update", newUser);
 
-    // socket.on("crudStores", (data) => {
-    //   console.log("total", data);
-    //   setTotalUser(data);
-    // });
+    socket.on("crudStores", (data) => {
+      console.log("total", data);
+      setTotalUser(data);
+    });
   }
-  //   function handleInput(event) {
-  //     let { name, value } = event.target;
-  //     let currObj = { [name]: value };
-  //     setNewUser((prev) => ({ ...prev, ...currObj }));
-  //   }
+
   function handleInput(event) {
     let { name, value } = event.target;
     setNewUser((prevUser) => ({
@@ -236,16 +245,16 @@ export function Modal({ setTotalUser, setIsOpen, updateUser }) {
                 <Input
                   name="Name"
                   handleInput={handleInput}
-                  //   value={updateUser?.Name || newUser.Name}
+                  value={newUser.Name || ""}
                 />
                 <Input
                   name={"Email"}
-                  handleInput={handleInput}
-                  value={updateUser?.Email}
+                  value={newUser.Email}
+                  handleInput={handleInput || ""}
                 />
                 <Input
                   name={"Password"}
-                  value={updateUser?.Password}
+                  value={newUser.Password}
                   handleInput={handleInput}
                   type={true}
                 />

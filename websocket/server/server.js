@@ -5,7 +5,7 @@ const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
   },
 });
 
@@ -28,13 +28,22 @@ io.on("connection", (socket) => {
     console.log(scores);
   });
 
-  socket.on("crud", (data) => {
+  socket.on("createRead", (data) => {
     users?.push({ ...data, id: socket.id });
     socket.emit("crudStores", users);
     setInterval(() => {
       socket.emit("crudStores", users);
     }, 5000);
     console.log(data);
+  });
+
+  socket.on("delete", (id) => {
+    console.log(id, "server");
+    users = users.filter((user) => user.id !== id);
+    socket.emit("crudStores", users);
+    setInterval(() => {
+      socket.emit("crudStores", users);
+    }, 5000);
   });
 });
 

@@ -1,6 +1,5 @@
 import Input from "./Input";
 import { useEffect, useState } from "react";
-// import {Delete} '@heroicons/react'
 import io from "socket.io-client";
 
 export default function Form() {
@@ -27,13 +26,23 @@ export default function Form() {
   console.log(user);
 
   function sendUsers() {
-    socket.emit("crud", user);
+    socket.emit("createRead", user);
 
     socket.on("crudStores", (data) => {
       console.log("total", data);
       setTotalUser(data);
     });
   }
+
+  function deleteUser(id) {
+    console.log("received id", id);
+    socket.emit("delete", id);
+    socket.on("crudStores", (data) => {
+      console.log("total", data);
+      setTotalUser(data);
+    });
+  }
+
   return (
     <div className="container mx-10">
       <div className="flex  mt-10">
@@ -60,12 +69,12 @@ export default function Form() {
           </form>
         </div>
       </div>
-      <Table totalUser={totalUser} />
+      <Table totalUser={totalUser} deleteUser={deleteUser} />
     </div>
   );
 }
 
-export function Table({ totalUser }) {
+export function Table({ totalUser, deleteUser }) {
   console.log("passing data", totalUser);
   return (
     <div className="flex flex-col">
@@ -123,7 +132,7 @@ export function Table({ totalUser }) {
                       {users.Password}
                     </td>
                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap  flex justify-around">
-                      <button>
+                      <button onClick={() => deleteUser(users.id)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

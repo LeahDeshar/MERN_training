@@ -100,7 +100,7 @@ export function Table({ totalUser, deleteUser, setUser, setTotalUser }) {
     setUpdateUser(users);
     setIsOpen(!isOpen);
   };
-  console.log("table", totalUser);
+  console.log("table", totalUser, updateUser);
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
@@ -211,14 +211,13 @@ export function Table({ totalUser, deleteUser, setUser, setTotalUser }) {
 }
 
 export function Modal({ setTotalUser, setIsOpen, updateUser }) {
-  const socket = io("http://localhost:3000");
+  const socket = io("http://localhost:8080");
   const [newUser, setNewUser] = useState(updateUser || {});
-  if (newUser) {
-    console.log("update", newUser);
-  }
+
   console.log("update", newUser);
 
   function updateUsers() {
+    console.log("button clicked");
     console.log("update");
     setIsOpen(false);
     socket.emit("update", newUser);

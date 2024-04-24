@@ -90,31 +90,22 @@ io.on("connection", (socket) => {
   socket.on("update", async (updatedUser) => {
     console.log(updatedUser);
     // update in db
-    // try {
-    //   await User.findByIdAndUpdate(updatedUser._id, updatedUser);
-    //   // users = users.map((user) =>
-    //   //   user.id === updatedUser.id ? updatedUser.toJSON() : user
-    //   // );
+    try {
+      await User.findByIdAndUpdate(updatedUser._id, updatedUser);
+      // users = users.map((user) =>
+      //   user.id === updatedUser.id ? updatedUser.toJSON() : user
+      // );
 
-    //   const allUsers = await User.find();
-    //   io.emit("crudStores", allUsers);
-    //   setInterval(() => {
-    //     socket.emit("crudStores", allUsers);
-    //   }, 5000);
-    //   console.log("User updated:", updatedUser);
-    // } catch (error) {
-    //   console.error("Error updating user:", error);
-    // }
+      const allUsers = await User.find();
+      io.emit("crudStores", allUsers);
+      setInterval(() => {
+        socket.emit("crudStores", allUsers);
+      }, 5000);
+      console.log("User updated:", updatedUser);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   });
-  // users = users.map((user) =>
-  //   user._id === updatedUser._id ? updatedUser : user
-  // );
-  // io.emit("usersUpdated", users);
-  // socket.emit("crudStores", users);
-  // setInterval(() => {
-  //   socket.emit("crudStores", users);
-  // }, 5000);
-  // });
 });
 
 httpServer.listen(8080, () => {

@@ -1,30 +1,22 @@
 import { useState } from "react";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-} from "@apollo/client";
 import "./App.css";
+import { useQuery, gql } from "@apollo/client";
 
-const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
-  cache: new InMemoryCache(),
-});
+const query = gql`
+  query ExampleQuery {
+    getTodo {
+      id
+      title
 
-const query = `
-query ExampleQuery {
-  getTodo {
-    id
-    title
-    
-    user {
-      name
+      user {
+        name
+      }
     }
   }
-}
 `;
 function App() {
+  const { loading, error, data } = useQuery(query);
+  console.log(data);
   return (
     <>
       <h1>hello</h1>

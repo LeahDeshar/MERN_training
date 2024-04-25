@@ -8,6 +8,8 @@ const cloudinary = require("cloudinary");
 const dotenv = require("dotenv");
 const productRouter = require("./routes/productRoutes");
 
+const Products = require("./models/productModel");
+
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
@@ -38,6 +40,15 @@ app.use("/api/v1/products", productRouter);
 
 io.on("connection", (socket) => {
   console.log("connected");
+
+  socket.on("getAll", async () => {
+    try {
+      const products = await Products.find();
+      socket.emit("read", products);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 });
 
 httpServer.listen(8080, () => {

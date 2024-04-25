@@ -1,5 +1,6 @@
 import "./App.css";
-import MainPage from "./crud/MainPage";
+import MainPage from "./addtocart/MainPage";
+
 function App() {
   return (
     <>

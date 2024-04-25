@@ -4,6 +4,7 @@ import io from "socket.io-client";
 export default function MainPage() {
   const socket = io("http://localhost:8080");
   const [totalProduct, setTotalProduct] = useState([]);
+  const [totalCart, setTotalCart] = useState([]);
 
   function connectionSocket() {
     socket.on("connection", (socket) => {
@@ -26,6 +27,13 @@ export default function MainPage() {
   function toggleOpen() {
     IsOpen(!open);
   }
+  function currentProduct(id) {
+    socket.emit("addToCart", id);
+    socket.on("readCart", (data) => {
+      setTotalCart(data);
+    });
+  }
+  console.log(totalCart);
   return (
     <div>
       <header className="text-gray-600 body-font">
@@ -39,7 +47,7 @@ export default function MainPage() {
           </nav>
           <div className=" relative">
             <div className="absolute top-0 z-50">
-              <Cart open={open} />
+              <Cart open={open} totalCart={totalCart} />
             </div>
             <button
               onClick={toggleOpen}
@@ -85,7 +93,10 @@ export default function MainPage() {
                   </h2>
                   <p className="mt-1">${product.price}.00</p>
                   <p className="mt-1">{product.description}</p>
-                  <button className=" bg-pink-900 text-white px-4 py-2  rounded-lg mt-3">
+                  <button
+                    onClick={() => currentProduct(product._id)}
+                    className=" bg-pink-900 text-white px-4 py-2  rounded-lg mt-3"
+                  >
                     Add to cart
                   </button>
                 </div>
@@ -98,8 +109,7 @@ export default function MainPage() {
   );
 }
 
-export function Cart({ open }) {
-  console.log(open);
+export function Cart({ open, totalCart }) {
   return (
     <div>
       <div className="pb-3">
@@ -109,26 +119,41 @@ export function Cart({ open }) {
               <div className=" w-full">
                 <div slot="icon" className="relative">
                   <div className="absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-black text-white">
-                    3
+                    {totalCart.length}
                   </div>
                 </div>
               </div>
             </div>
             {open && (
               <div className="absolute w-full right-36 rounded-b border-t-0 z-50">
-                <div className="shadow-xl w-64">
-                  <div className="p-2 flex bg-white hover:bg-gray-100 cursor-pointer border-b border-gray-100">
-                    <div className="p-2 w-12"></div>
-                    <div className="flex-auto text-sm w-32">
-                      <div className="font-bold">Product 1</div>
-                      <div className="truncate">Product 1 description</div>
-                      <div className="text-gray-400">Qt: 2</div>
-                    </div>
-                    <div className="flex flex-col w-18 font-medium items-end">
-                      <div className="w-4 h-4 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700"></div>
-                      $12.22
-                    </div>
-                  </div>
+                <div className="shadow-xl w-80">
+                  {totalCart &&
+                    totalCart.map((cart, i) => (
+                      <div
+                        key={i}
+                        className="p-2 flex bg-white hover:bg-gray-100 cursor-pointer border-b border-gray-100"
+                      >
+                        <div className="p-2 w-20">
+                          <img
+                            src={cart.items[0].product.images[0].url}
+                            className="w-50 object-cover"
+                          />
+                        </div>
+                        <div className="flex-auto text-sm w-36">
+                          <div className="font-bold">
+                            {cart.items[0].product.name}
+                          </div>
+                          <div className="truncate">
+                            {cart.items[0].product.description}
+                          </div>
+                          <div className="text-gray-400">Qt: 2</div>
+                        </div>
+                        <div className="flex flex-col w-18 font-medium items-end">
+                          <div className="w-4 h-4 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700"></div>
+                          $ {cart.items[0].product.price}.00
+                        </div>
+                      </div>
+                    ))}
 
                   <div className="p-4 justify-center flex">
                     <button

@@ -9,6 +9,7 @@ const dotenv = require("dotenv");
 const productRouter = require("./routes/productRoutes");
 
 const Products = require("./models/productModel");
+const Cart = require("./models/cartModel");
 
 const app = express();
 app.use(express.json());
@@ -49,6 +50,39 @@ io.on("connection", (socket) => {
       console.log(error);
     }
   });
+
+  // Add to cart event
+  socket.on("addToCart", async (id) => {
+    try {
+      console.log(id);
+      const product = await Products.findById(id);
+      console.log(product);
+      if (!product) {
+        return socket.emit("addToCartError", "Product not found");
+      }
+      // Add to cart logic
+      // create the cart with the product and quantity
+      const cart = new Cart({
+        items: [
+          {
+            product: product._id,
+          },
+        ],
+      });
+
+      cart.totalQuantity += 1;
+      cart.totalPrice += product.price;
+      await cart.save();
+
+      const AllCart = await Cart.find().populate("items.product");
+      socket.emit("readCart", AllCart);
+    } catch (error) {
+      // Handle errors
+      console.log("Error adding to cart:", error);
+      socket.emit("addToCartError", "An error occurred while adding to cart");
+    }
+  });
+  socket.on("RemoveFromCart", () => {});
 });
 
 httpServer.listen(8080, () => {

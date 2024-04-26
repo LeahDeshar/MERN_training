@@ -19,6 +19,11 @@ export default function MainPage() {
       setTotalProduct(data);
       console.log(data);
     });
+
+    socket.emit("readFromCart");
+    socket.on("readCart", (data) => {
+      setTotalCart(data);
+    });
   }, []);
   console.log(totalProduct);
 
@@ -119,7 +124,7 @@ export function Cart({ open, totalCart }) {
               <div className=" w-full">
                 <div slot="icon" className="relative">
                   <div className="absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-black text-white">
-                    {totalCart.length}
+                    {totalCart?.length}
                   </div>
                 </div>
               </div>

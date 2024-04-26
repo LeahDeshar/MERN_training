@@ -82,6 +82,14 @@ io.on("connection", (socket) => {
       socket.emit("addToCartError", "An error occurred while adding to cart");
     }
   });
+  socket.on("readFromCart", async () => {
+    try {
+      const AllCart = await Cart.find().populate("items.product");
+      socket.emit("readCart", AllCart);
+    } catch (error) {
+      console.log(error);
+    }
+  });
   socket.on("RemoveFromCart", () => {});
 });
 

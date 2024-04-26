@@ -39,6 +39,14 @@ export default function MainPage() {
     });
   }
   console.log(totalCart);
+
+  function deleteFromCart(id) {
+    console.log("from parent", id);
+    socket.emit("removeFromCart", id);
+    socket.on("removeProduct", (data) => {
+      setTotalCart(data);
+    });
+  }
   return (
     <div>
       <header className="text-gray-600 body-font">
@@ -52,7 +60,11 @@ export default function MainPage() {
           </nav>
           <div className=" relative">
             <div className="absolute top-0 z-50">
-              <Cart open={open} totalCart={totalCart} />
+              <Cart
+                open={open}
+                totalCart={totalCart}
+                deleteFromCart={deleteFromCart}
+              />
             </div>
             <button
               onClick={toggleOpen}
@@ -114,7 +126,14 @@ export default function MainPage() {
   );
 }
 
-export function Cart({ open, totalCart }) {
+export function Cart({ open, totalCart, deleteFromCart }) {
+  function deleteProduct(id) {
+    console.log(id);
+    deleteFromCart(id);
+  }
+  const allPrice = totalCart?.reduce((acc, cart) => {
+    return (acc += Number(cart.items[0].product.price));
+  }, 0);
   return (
     <div>
       <div className="pb-3">
@@ -131,36 +150,57 @@ export function Cart({ open, totalCart }) {
             </div>
             {open && (
               <div className="absolute w-full right-36 rounded-b border-t-0 z-50">
-                <div className="shadow-xl w-80">
-                  {totalCart &&
-                    totalCart.map((cart, i) => (
-                      <div
-                        key={i}
-                        className="p-2 flex bg-white hover:bg-gray-100 cursor-pointer border-b border-gray-100"
-                      >
-                        <div className="p-2 w-20">
-                          <img
-                            src={cart.items[0].product.images[0].url}
-                            className="w-50 object-cover"
-                          />
-                        </div>
-                        <div className="flex-auto text-sm w-36">
-                          <div className="font-bold">
-                            {cart.items[0].product.name}
+                <div className="shadow-xl w-80  bg-white ">
+                  <div className="overflow-y-scroll h-96 bg-white">
+                    {totalCart &&
+                      totalCart.map((cart, i) => (
+                        <div
+                          key={i}
+                          className="p-2 flex bg-white hover:bg-gray-100 cursor-pointer border-b border-gray-100"
+                        >
+                          <div className=" mr-3">
+                            <img
+                              src={cart.items[0].product.images[0].url}
+                              className="h-20 w-20  object-cover"
+                            />
                           </div>
-                          <div className="truncate">
-                            {cart.items[0].product.description}
+                          <div className="flex-auto text-sm w-36">
+                            <div className="font-bold">
+                              {cart.items[0].product.name}
+                            </div>
+                            <div className="truncate">
+                              {cart.items[0].product.description}
+                            </div>
+                            <div className="text-gray-400">
+                              <button
+                                onClick={() => deleteProduct(cart._id)}
+                                className="hover:text-pink-500"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
-                          <div className="text-gray-400">Qt: 2</div>
+                          <div className="flex flex-col w-18 font-medium items-end">
+                            <div className="w-4 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700"></div>
+                            $ {cart.items[0].product.price}.00
+                          </div>
                         </div>
-                        <div className="flex flex-col w-18 font-medium items-end">
-                          <div className="w-4 h-4 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700"></div>
-                          $ {cart.items[0].product.price}.00
-                        </div>
-                      </div>
-                    ))}
-
-                  <div className="p-4 justify-center flex">
+                      ))}
+                  </div>
+                  <div className="bg-pink-200 p-4 justify-center flex">
                     <button
                       className="text-base  undefined  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer
               hover:bg-pink-700 hover:text-pink-100
@@ -169,7 +209,7 @@ export function Cart({ open, totalCart }) {
               border duration-200 ease-in-out
               border-pink-600 transition"
                     >
-                      Checkout $36.66
+                      Checkout ${allPrice}.00
                     </button>
                   </div>
                 </div>

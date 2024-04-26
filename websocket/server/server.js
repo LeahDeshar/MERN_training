@@ -90,7 +90,16 @@ io.on("connection", (socket) => {
       console.log(error);
     }
   });
-  socket.on("RemoveFromCart", () => {});
+  socket.on("removeFromCart", async (id) => {
+    try {
+      await Cart.findByIdAndDelete(id);
+      const AllCart = await Cart.find().populate("items.product");
+
+      socket.emit("removeProduct", AllCart);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  });
 });
 
 httpServer.listen(8080, () => {

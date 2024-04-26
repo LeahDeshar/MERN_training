@@ -32,6 +32,13 @@ async function startApolloServer() {
             getUsers: [User]
             getUser(id: ID!): User
         }
+
+        type Mutation {
+          deleteUser(id: ID!): [User]
+          addUser(name:String!,username:String!,email:String!,phone:String!,website:String!): User
+          updateUser(id:ID!,name:String,username:String,email:String,phone:String,website:String): User
+
+        }
     `,
     resolvers: {
       Todo: {
@@ -54,6 +61,43 @@ async function startApolloServer() {
           await axios
             .get(`https://jsonplaceholder.typicode.com/users/${id}`)
             .then((res) => res.data),
+      },
+      Mutation: {
+        deleteUser: async (_, { id }) => {
+          await axios.delete(
+            `https://jsonplaceholder.typicode.com/users/${id}`
+          );
+          return await axios
+            .get("https://jsonplaceholder.typicode.com/users")
+            .then((res) => res.data);
+        },
+        addUser: async (_, { name, username, email, phone, website }) => {
+          const user = {
+            name,
+            username,
+            email,
+            phone,
+            website,
+          };
+          return await axios
+            .post("https://jsonplaceholder.typicode.com/users", user)
+            .then((res) => res.data);
+        },
+        updateUser: async (
+          _,
+          { id, name, username, email, phone, website }
+        ) => {
+          const user = {
+            name,
+            username,
+            email,
+            phone,
+            website,
+          };
+          return await axios
+            .put(`https://jsonplaceholder.typicode.com/users/${id}`, user)
+            .then((res) => res.data);
+        },
       },
     },
     context: ({ req }) => {

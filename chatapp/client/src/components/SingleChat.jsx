@@ -168,40 +168,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       </div> */}
       {selectedChat ? (
         <>
-          <Text
-            fontSize={{ base: "28px", md: "30px" }}
-            pb={3}
-            px={2}
-            w="100%"
-            fontFamily="Work sans"
-            d="flex"
-            justifyContent={{ base: "space-between" }}
-            alignItems="center"
-          >
-            <IconButton
-              d={{ base: "flex", md: "none" }}
-              icon={<ArrowBackIcon />}
-              onClick={() => setSelectedChat("")}
-            />
-            {messages &&
-              (!selectedChat.isGroupChat ? (
-                <>
-                  {getSender(user, selectedChat.users)}
-                  <ProfileModal
-                    user={getSenderFull(user, selectedChat.users)}
-                  />
-                </>
-              ) : (
-                <>
-                  {selectedChat.chatName.toUpperCase()}
-                  <UpdateGroupChatModal
-                    fetchMessages={fetchMessages}
-                    fetchAgain={fetchAgain}
-                    setFetchAgain={setFetchAgain}
-                  />
-                </>
-              ))}
-          </Text>
+          <div className="flex flex-row justify-between  ">
+            <div>
+              <IconButton
+                d={{ base: "flex", md: "none" }}
+                icon={<ArrowBackIcon />}
+                onClick={() => setSelectedChat("")}
+              />
+            </div>
+            <div>
+              {messages &&
+                (!selectedChat.isGroupChat ? (
+                  <div className="flex flex-row items-center gap-5 ">
+                    <div> {getSender(user, selectedChat.users)}</div>
+                    <div>
+                      <ProfileModal
+                        user={getSenderFull(user, selectedChat.users)}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-row items-center gap-5">
+                    <div>{selectedChat.chatName.toUpperCase()}</div>
+                    <div>
+                      <UpdateGroupChatModal
+                        fetchMessages={fetchMessages}
+                        fetchAgain={fetchAgain}
+                        setFetchAgain={setFetchAgain}
+                      />
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+
           <Box
             d="flex"
             flexDir="column"

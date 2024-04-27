@@ -177,7 +177,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:3001/api/chat/api/chat/groupremove`,
+        `http://localhost:3001/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

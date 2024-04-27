@@ -131,34 +131,30 @@ function SideDrawer() {
 
   return (
     <>
-      <Box
-        d="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        bg="pink"
-        w="100%"
-        p="5px 10px 5px 10px"
-        borderWidth="5px"
-      >
-        <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen}>
-            <i className="fas fa-search"></i>
-            <Text d={{ base: "none", md: "flex" }} px={4}>
-              Search User
-            </Text>
-          </Button>
-        </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
-        </Text>
+      <div className="bg-pink-500 flex flex-row justify-between items-center h-full">
+        <div>
+          <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+            <Button variant="ghost" onClick={onOpen}>
+              <i className="fas fa-search"></i>
+              <Text d={{ base: "none", md: "flex" }} px={4}>
+                Search User
+              </Text>
+            </Button>
+          </Tooltip>
+        </div>
+        <div>
+          <Text fontSize="2xl" fontFamily="Work sans">
+            Talk-A-Tive
+          </Text>
+        </div>
         <div>
           <Menu>
             <MenuButton p={1}>
               {/* <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              /> */}
-              <div></div>
+            count={notification.length}
+            effect={Effect.SCALE}
+          />  */}
+              <div>{notification.length}</div>
               <BellIcon fontSize="2xl" m={1} />
             </MenuButton>
             <MenuList pl={2}>
@@ -196,7 +192,7 @@ function SideDrawer() {
             </MenuList>
           </Menu>
         </div>
-      </Box>
+      </div>
 
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />

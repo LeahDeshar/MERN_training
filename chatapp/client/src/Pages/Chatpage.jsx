@@ -10,14 +10,28 @@ const Chatpage = () => {
   const { user } = ChatState();
 
   return (
-    <div style={{ width: "100%" }} className=" w-full border-2 border-black">
+    <div>
       {user && <SideDrawer />}
-      <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {user && <MyChats fetchAgain={fetchAgain} />}
-        {user && (
-          <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
-        )}
-      </Box>
+      {/* <div className="flex flex-row border-2 border-black">
+        <div className="border-2 border-black">
+          {user && <MyChats fetchAgain={fetchAgain} />}
+        </div>
+        <div className="border-2 border-red-800 mx-10">
+          {user && (
+            <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+          )}
+        </div>
+      </div> */}
+      <div className="flex flex-row border-2 border-black">
+        <div className="border-2 border-black  w-1/3">
+          {user && <MyChats fetchAgain={fetchAgain} />}
+        </div>
+        <div className="border-2 border-red-800 mx-10 flex-1">
+          {user && (
+            <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+          )}
+        </div>
+      </div>
     </div>
   );
 };

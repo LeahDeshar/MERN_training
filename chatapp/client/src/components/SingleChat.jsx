@@ -224,7 +224,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     options={defaultOptions}
                     // height={50}
                     width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
+                    // style={{ marginBottom: 15, marginLeft: 0 }}
                   />
                 </div>
               ) : (

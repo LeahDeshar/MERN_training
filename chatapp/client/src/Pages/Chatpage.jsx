@@ -12,21 +12,12 @@ const Chatpage = () => {
   return (
     <div>
       {user && <SideDrawer />}
-      {/* <div className="flex flex-row border-2 border-black">
-        <div className="border-2 border-black">
+
+      <div className="flex flex-row   mx-20 mb-52" style={{ height: "80vh" }}>
+        <div className=" w-1/3">
           {user && <MyChats fetchAgain={fetchAgain} />}
         </div>
-        <div className="border-2 border-red-800 mx-10">
-          {user && (
-            <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
-          )}
-        </div>
-      </div> */}
-      <div className="flex flex-row border-2 border-black">
-        <div className="border-2 border-black  w-1/3">
-          {user && <MyChats fetchAgain={fetchAgain} />}
-        </div>
-        <div className="border-2 border-red-800 mx-10 flex-1">
+        <div className=" mx-10 flex-1">
           {user && (
             <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
           )}

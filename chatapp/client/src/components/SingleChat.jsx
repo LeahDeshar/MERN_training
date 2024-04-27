@@ -161,11 +161,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      {/* <div className=" ">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-      </div> */}
       {selectedChat ? (
         <>
           <div className="flex flex-row justify-between  ">
@@ -202,17 +197,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             </div>
           </div>
 
-          <Box
-            d="flex"
-            flexDir="column"
-            justifyContent="flex-end"
-            p={3}
-            bg="#E8E8E8"
-            w="100%"
-            h="100%"
-            borderRadius="lg"
-            overflowY="hidden"
-          >
+          <div className="flex flex-col h-full justify-end rounded-lg overflow-hidden bg-pink-200 pb-10">
             {loading ? (
               <Spinner
                 size="xl"
@@ -253,10 +238,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 onChange={typingHandler}
               />
             </FormControl>
-          </Box>
+          </div>
         </>
       ) : (
-        // to get socket.io on same page
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} fontFamily="Work sans">
             Click on a user to start chatting

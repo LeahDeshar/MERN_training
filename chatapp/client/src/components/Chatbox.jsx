@@ -7,7 +7,7 @@ const Chatbox = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat } = ChatState();
 
   return (
-    <div>
+    <div className="h-full">
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     </div>
   );

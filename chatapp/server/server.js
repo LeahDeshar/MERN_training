@@ -12,7 +12,7 @@ connectDB();
 const app = express();
 
 app.use(express.json()); // to accept json data
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
 
 // app.get("/", (req, res) => {
 //   res.send("API Running!");
@@ -36,7 +36,7 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     // credentials: true,
   },
 });

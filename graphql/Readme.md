@@ -23,7 +23,7 @@ books {
 
 ```
 
-**Create Operation**
+**Create Mutation**
 
 ```
 mutation CreateBook($input: BookInput!) {
@@ -35,3 +35,27 @@ createBook(input: $input) {
 }
 
 ```
+
+**Delete Mutation**
+
+```
+mutation DeleteBook($deleteBookId: ID!) {
+  deleteBook(id: $deleteBookId) {
+    _id
+  }
+}
+```
+
+**Update Mutation**
+
+```
+mutation UpdateBook($updateBookId: ID!, $updateBookInput2: BookInput!) {
+  updateBook(id: $updateBookId, input: $updateBookInput2) {
+    _id
+  }
+}
+```
+
+### ScreenShot
+
+![output](o1.png)

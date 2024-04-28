@@ -3,101 +3,56 @@ const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { default: axios } = require("axios");
+const Book = require("./models/Book");
+const mongoose = require("mongoose");
 
 // start server
 
 async function startApolloServer() {
+  await mongoose
+    .connect(
+      "mongodb+srv://leahdesar:YIQsgaVrZBJhGUIL@cluster0.cnco2vy.mongodb.net/graphql"
+    )
+    .then(() => {
+      console.log("Connected to MongoDB");
+    })
+    .catch((err) => console.error(err));
+
   const app = express();
   const server = new ApolloServer({
     typeDefs: `
-    type User{
-            id: ID!
-            name: String!
-            username: String!
-            email: String!
-            phone: String!
-            website: String!
-        }
-       
-        type Todo{
-            id: ID!
-            title: String!
-            completed: Boolean!
-            user: User
-        }
-        
-        type Query{
-            getTodo: [Todo]
-            getUsers: [User]
-            getUser(id: ID!): User
-        }
-
-        type Mutation {
-          deleteUser(id: ID!): [User]
-          addUser(name:String!,username:String!,email:String!,phone:String!,website:String!): User
-          updateUser(id:ID!,name:String,username:String,email:String,phone:String,website:String): User
-
-        }
+    type Book {
+      _id: ID!
+      title: String!
+      author: String!
+    }
+    
+    input BookInput {
+      title: String!
+      author: String!
+    }
+    
+    type Query {
+      books: [Book]!
+      book(id: ID!): Book
+    }
+    
+    type Mutation {
+      createBook(input: BookInput!): Book!
+      updateBook(id: ID!, input: BookInput!): Book!
+      deleteBook(id: ID!): Book!
+    }      
     `,
     resolvers: {
-      Todo: {
-        user: async (todo) =>
-          await axios
-            .get(`https://jsonplaceholder.typicode.com/users/${todo.userId}`)
-            .then((res) => res.data),
-      },
       Query: {
-        getTodo: async () =>
-          await axios
-            .get("https://jsonplaceholder.typicode.com/todos")
-            .then((res) => res.data),
-
-        getUsers: async () =>
-          await axios
-            .get("https://jsonplaceholder.typicode.com/users")
-            .then((res) => res.data),
-        getUser: async (_, { id }) =>
-          await axios
-            .get(`https://jsonplaceholder.typicode.com/users/${id}`)
-            .then((res) => res.data),
+        books: async () => await Book.find(),
+        book: async (_, { id }) => await Book.findById(id),
       },
       Mutation: {
-        deleteUser: async (_, { id }) => {
-          await axios.delete(
-            `https://jsonplaceholder.typicode.com/users/${id}`
-          );
-          return await axios
-            .get("https://jsonplaceholder.typicode.com/users")
-            .then((res) => res.data);
-        },
-        addUser: async (_, { name, username, email, phone, website }) => {
-          const user = {
-            name,
-            username,
-            email,
-            phone,
-            website,
-          };
-          return await axios
-            .post("https://jsonplaceholder.typicode.com/users", user)
-            .then((res) => res.data);
-        },
-        updateUser: async (
-          _,
-          { id, name, username, email, phone, website }
-        ) => {
-          const user = {
-            name,
-            username,
-            email,
-            phone,
-            website,
-          };
-          return await axios
-            .put(`https://jsonplaceholder.typicode.com/users/${id}`, user)
-            .then((res) => res.data);
-        },
+        createBook: async (_, { input }) => await Book.create(input),
+        updateBook: async (_, { id, input }) =>
+          await Book.findByIdAndUpdate(id, input, { new: true }),
+        deleteBook: async (_, { id }) => await Book.findByIdAndDelete(id),
       },
     },
     context: ({ req }) => {

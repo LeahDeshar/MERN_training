@@ -19,11 +19,20 @@ def CreateRoom(request):
 
 def MessageView(request, room_name, username):
     get_room = Room.objects.get(room_name=room_name)
-    get_messages = Message.objects.filter(room=get_room)
+
+    if request.method == 'POST':
+        message = request.POST['message']
+
+        print(message)
+
+        new_message = Message(room=get_room, sender=username, message=message)
+        new_message.save()
+
+    get_messages= Message.objects.filter(room=get_room)
     
     context = {
         "messages": get_messages,
         "user": username,
         "room_name": room_name,
     }
-    return render(request, '_message.html',context)
+    return render(request, '_message.html', context)

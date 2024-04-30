@@ -20,6 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
     async def send_message(self, event):
         data = event['message']
+        print(data)
         await self.create_message(data=data)
         response_data = {
             'sender': data['sender'],

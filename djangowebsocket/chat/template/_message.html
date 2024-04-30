@@ -104,6 +104,35 @@
           })
         );
       });
+    // Response from consumer on the server
+    socket.addEventListener("message", (event) => {
+      const messageData = JSON.parse(event.data)["message"];
+      console.log(messageData);
+
+      var sender = messageData["sender"];
+      var message = messageData["message"];
+
+      // Empty the message input field after the message has been sent
+      if (sender == "{{user}}") {
+        document.getElementById("msg").value = "";
+      }
+
+      // Append the message to the chatbox
+      var messageDiv = document.querySelector(".message");
+      if (sender != "{{user}}") {
+        // Assuming you have a variable `currentUser` to hold the current user's name
+        messageDiv.innerHTML +=
+          '<div class="receive"><p style="color: #000;">' +
+          message +
+          "<strong>-" +
+          sender +
+          "</strong></p></div>";
+      } else {
+        messageDiv.innerHTML +=
+          '<div class="send"><p style="color: #000;">' + message + "</p></div>";
+      }
+      scrollToBottom();
+    });
   </script>
   <style>
     * {

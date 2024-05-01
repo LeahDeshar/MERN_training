@@ -2,12 +2,14 @@
 
 # dependencies
 node_modules/
+firebaseConfig.js 
 
 # Expo
 .expo/
 dist/
 web-build/
 
+android/
 # Native
 *.orig.*
 *.jks

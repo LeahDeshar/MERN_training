@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
-import React from "react";
+import EmptyState from "../components/EmptyState";
 
 const Home = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{ flex: 1 }}>
+      <EmptyState />
     </View>
   );
 };

@@ -8,11 +8,10 @@ export default function EmptyState() {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 100,
       }}
     >
       <SvgComponent />
-      <Text style={{ color: "black", marginTop: 20 }}>
+      <Text style={{ color: "grey", marginTop: 20 }}>
         No photo uploaded yet
       </Text>
     </View>

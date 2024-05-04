@@ -14,18 +14,36 @@ const Home = () => {
   const [video, setVideo] = useState("");
   const [progress, setProgress] = useState(0);
   const [files, setFiles] = useState([]);
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(collection(db, "files"), (snapshot) => {
+  //     snapshot.docChanges().forEach((change) => {
+  //       if (change.type === "added") {
+  //         console.log("New file", change.doc.data());
+  //         setFiles((prevFiles) => [...prevFiles, change.doc.data()]);
+  //       }
+  //     });
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "files"), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          console.log("New file", change.doc.data());
-          setFiles((prevFiles) => [...prevFiles, change.doc.data()]);
+          const newFile = change.doc.data();
+          // Check if the file already exists in the state
+          const existingFileIndex = files.findIndex(
+            (file) => file.url === newFile.url
+          );
+          if (existingFileIndex === -1) {
+            console.log("New file", newFile);
+            // Add the new file to the state only if it doesn't already exist
+            setFiles((prevFiles) => [...prevFiles, newFile]);
+          }
         }
       });
     });
     return () => unsubscribe();
-  }, []);
-
+  }, [files]);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -98,46 +116,64 @@ const Home = () => {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        marginHorizontal: 20,
       }}
     >
-      <FlatList
-        data={files}
-        keyExtractor={(item) => item.url}
-        renderItem={({ item }) => {
-          if (item.fileType === "image") {
-            return (
-              <Image
-                source={{ uri: item.url }}
-                style={{ width: "34%", height: 100 }}
-              />
-            );
-          } else {
-            return (
-              <Video
-                source={{
-                  uri: item.url,
-                }}
-                // videoStyle={{ borderWidth: 1, borderColor: "red" }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                shouldPlay
-                // isLooping
-                style={{ width: "34%", height: 100 }}
-                useNativeControls
-              />
-            );
-          }
+      <Text
+        style={{
+          marginTop: 50,
+          fontSize: 30,
+          fontWeight: "bold",
+          paddingBottom: 20,
         }}
-        numColumns={3}
-        contentContainerStyle={{ gap: 2 }}
-        columnWrapperStyle={{ gap: 2 }}
-      />
+      >
+        Files
+      </Text>
+      {files.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <FlatList
+          data={files}
+          keyExtractor={(item) => item.url}
+          renderItem={({ item }) => {
+            if (item.fileType === "image") {
+              return (
+                <Image
+                  source={{ uri: item.url }}
+                  style={{
+                    width: "35%",
+                    height: 100,
+                    // flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                />
+              );
+            } else {
+              return (
+                <Video
+                  source={{
+                    uri: item.url,
+                  }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted={false}
+                  resizeMode="cover"
+                  // isLooping
+                  style={{ width: "35%", height: 100 }}
+                  useNativeControls
+                />
+              );
+            }
+          }}
+          numColumns={3}
+          contentContainerStyle={{ gap: 2 }}
+          columnWrapperStyle={{ gap: 2 }}
+        />
+      )}
       {image && <Uploading image={image} video={video} progress={progress} />}
       {/* <Uploading progress={20} /> */}
-      <EmptyState />
+      {/* <EmptyState /> */}
       <TouchableOpacity
         onPress={pickImage}
         style={{

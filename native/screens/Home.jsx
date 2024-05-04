@@ -6,11 +6,12 @@ import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import {} from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 
 const Home = () => {
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -21,12 +22,35 @@ const Home = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      await uploadImage(result.assets[0].uri, "image");
     }
   };
 
   async function uploadImage(uri, fileType) {
     const response = await fetch(uri);
     const blob = await response.blob();
+    const storageRef = ref(storage, "Stuff/" + new Date().getTime());
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+    // listen for event
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress.toFixed());
+        console.log(progress);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          setImage("");
+          setVideo("");
+        });
+      }
+    );
   }
   return (
     <View
@@ -36,7 +60,7 @@ const Home = () => {
         alignItems: "center",
       }}
     >
-      {image && <Uploading progress={20} />}
+      {image && <Uploading image={image} video={video} progress={progress} />}
       {/* <Uploading progress={20} /> */}
       <EmptyState />
       <TouchableOpacity

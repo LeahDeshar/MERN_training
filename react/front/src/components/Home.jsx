@@ -42,7 +42,6 @@ const RepoList = () => {
       ) : (
         <h1>Loading...</h1>
       )}
-      <Link to="/users">Go to User page</Link>
     </div>
   );
 };

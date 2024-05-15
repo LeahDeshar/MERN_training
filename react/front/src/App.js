@@ -4,6 +4,8 @@ import Home from "./components/Home";
 import Aboutus from "./components/Aboutus";
 import Users from "./components/Users";
 import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+import UserProfile from "./components/UserProfile";
 function App() {
   return (
     <div className="App">
@@ -12,7 +14,9 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/users/user" element={<UserProfile />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

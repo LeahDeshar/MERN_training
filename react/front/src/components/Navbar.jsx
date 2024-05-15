@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import { Outlet } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -13,6 +14,7 @@ const Navbar = () => {
           <a href="##">Users</a>
         </div>
       </nav>
+      <Outlet />
     </>
   );
 };

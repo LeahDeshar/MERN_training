@@ -1,13 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./styles.css";
+import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
+  const { username } = useParams();
+  console.log(username);
   const [gitUserData, setGitUserData] = useState({});
 
   useEffect(() => {
     const getGitUser = async () => {
-      const response = await axios.get(`https://api.github.com/users/Kolosafo`);
+      const response = await axios.get(
+        `https://api.github.com/users/${username}`
+      );
       console.log("USER IS HERE", response.data);
       setGitUserData(response.data);
       return response.data;

@@ -4,14 +4,18 @@
       <div
         class="rounded-circle d-flex align-items-center justify-content-center"
       >
-        <button class="btn btn-outline-success mx-2">Laptop</button>
-        <button class="btn btn-outline-success mx-2">Camera</button>
-        <button class="btn btn-outline-success mx-2">I-Pad</button>
-        <button class="btn btn-outline-success mx-2">Moniter</button>
-        <button class="btn btn-outline-success mx-2">Headphones</button>
+        @for(item of categoryList;track $index){
+        <button class="btn btn-outline-success mx-2">{{ item }}</button>
+        }
       </div>
-      <div class="row">
-        <div class="col-md-12 col-1g-3 pt-2 mb-4 mb-1g-0"></div>
+      <div class="container">
+        <div class="row">
+          @for(item of productList; track $index){
+          <div class="col-md-12 col-1g-3 pt-2 mb-4 mb-1g-0">
+            <app-product-card></app-product-card>
+          </div>
+          }
+        </div>
       </div>
     </div>
   </section>

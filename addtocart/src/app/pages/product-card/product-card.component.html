@@ -33,7 +33,9 @@
     <div class="d-flex justify-content-between mb-3">
       <h5 class="mb-0">{{ product.productName }}</h5>
       <h5 class="text-dark mb-0">
-        ${{ ((product.price / product.discount) * 100).toFixed(0) }}
+        ${{
+          ((product.price / product.discount) * 100).toFixed(0) - product.price
+        }}
       </h5>
     </div>
 

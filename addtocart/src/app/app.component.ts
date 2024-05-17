@@ -12,9 +12,15 @@ import { ProductService } from './service/product.service';
 export class AppComponent {
   productService = inject(ProductService);
   isCartVisible: boolean = false;
+  cartItems: any[] = [];
 
   constructor() {
-    this.productService.onAddToCart$.subscribe((res: any) => {});
+    this.productService.onAddToCart$.subscribe((res: any) => {
+      this.cartItems.unshift(res);
+    });
+  }
+  removeProduct(index: number) {
+    this.cartItems.splice(index, 1);
   }
 
   showCart() {

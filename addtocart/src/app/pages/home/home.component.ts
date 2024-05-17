@@ -180,4 +180,24 @@ export class HomeComponent {
         'https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/7.webp',
     },
   ];
+
+  filteredProducts: any[] = [];
+  selectedCategory: string = '';
+
+  constructor() {
+    this.filteredProducts = this.productList;
+  }
+
+  filterCategory(category: string) {
+    if (this.selectedCategory == category) {
+      this.selectedCategory = '';
+      this.filteredProducts = this.productList;
+    } else {
+      this.selectedCategory = category;
+      const products = this.productList.filter(
+        (prod) => prod.category == category
+      );
+      this.filteredProducts = products;
+    }
+  }
 }

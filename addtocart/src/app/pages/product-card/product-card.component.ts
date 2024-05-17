@@ -9,4 +9,9 @@ import { Component, Input } from '@angular/core';
 })
 export class ProductCardComponent {
   @Input() product: any;
+
+  getDiscountedPrice(product: any) {
+    const totalValue = product.price * ((100 - product.discount) / 100);
+    return totalValue.toFixed(0);
+  }
 }

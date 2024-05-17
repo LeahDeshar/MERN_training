@@ -5,11 +5,20 @@
         class="rounded-circle d-flex align-items-center justify-content-center"
       >
         @for(item of categoryList;track $index){
-        <button class="btn btn-outline-success mx-2">{{ item }}</button>
+        <button
+          [class]="
+            selectedCategory == item
+              ? 'btn btn-success mx-2'
+              : 'btn btn-outline-success mx-2'
+          "
+          (click)="filterCategory(item)"
+        >
+          {{ item }}
+        </button>
         }
       </div>
       <div class="row">
-        @for(item of productList; track $index){
+        @if (filteredProducts) {} @for(item of filteredProducts; track $index){
         <div class="col-md-12 col-lg-3 pt-2 mb-4 mb-lg-0">
           <app-product-card [product]="item"></app-product-card>
         </div>

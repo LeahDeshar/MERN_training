@@ -9,7 +9,15 @@ import { ProductCardComponent } from '../product-card/product-card.component';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  categoryList = ['Laptop', 'IPad', 'Moniter', 'Camera', 'Headphone'];
+  categoryList = [
+    'Laptop',
+    'IPad',
+    'Moniter',
+    'Camera',
+    'Headphone',
+    'Mobile',
+    'Tablet',
+  ];
   productList = [
     {
       productId: 1,

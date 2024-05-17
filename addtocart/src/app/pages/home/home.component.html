@@ -18,11 +18,16 @@
         }
       </div>
       <div class="row">
-        @if (filteredProducts) {} @for(item of filteredProducts; track $index){
+        @if (filteredProducts.length == 0) {
+        <div class="col-12 text-center">
+          <p>No Products Found</p>
+        </div>
+
+        }@else{ @for(item of filteredProducts; track $index){
         <div class="col-md-12 col-lg-3 pt-2 mb-4 mb-lg-0">
           <app-product-card [product]="item"></app-product-card>
         </div>
-        }
+        } }
       </div>
     </div>
   </section>

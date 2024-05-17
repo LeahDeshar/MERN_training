@@ -8,14 +8,12 @@
         <button class="btn btn-outline-success mx-2">{{ item }}</button>
         }
       </div>
-      <div class="container">
-        <div class="row">
-          @for(item of productList; track $index){
-          <div class="col-md-12 col-1g-3 pt-2 mb-4 mb-1g-0">
-            <app-product-card></app-product-card>
-          </div>
-          }
+      <div class="row">
+        @for(item of productList; track $index){
+        <div class="col-md-12 col-lg-3 pt-2 mb-4 mb-lg-0">
+          <app-product-card [product]="item"></app-product-card>
         </div>
+        }
       </div>
     </div>
   </section>

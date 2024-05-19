@@ -10,6 +10,7 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
+      <h1>Hello</h1>
       {/* <Routes>
         <Route path="/" element={<Navbar />}>
           <Route path="/" exact element={<Home />} />

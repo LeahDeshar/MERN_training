@@ -6,12 +6,17 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/three": "^0.164.0",
+    "@types/webgi": "https://dist.pixotronics.com/webgi/runtime/bundle-types-0.9.8.tgz",
     "axios": "^1.6.8",
+    "gsap": "^3.12.5",
+    "lenis": "^1.0.45",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webgi": "https://dist.pixotronics.com/webgi/runtime/bundle-0.9.8.tgz"
   },
   "scripts": {
     "start": "react-scripts start",

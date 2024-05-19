@@ -1,16 +1,16 @@
-import { Route, Routes } from "react-router-dom";
+// import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
-import Aboutus from "./components/Aboutus";
-import Users from "./components/Users";
-import Navbar from "./components/Navbar";
-import NotFound from "./components/NotFound";
-import UserProfile from "./components/UserProfile";
-import SearchUser from "./components/SearchUser";
+// import Home from "./components/Home";
+// import Aboutus from "./components/Aboutus";
+// import Users from "./components/Users";
+// import Navbar from "./components/Navbar";
+// import NotFound from "./components/NotFound";
+// import UserProfile from "./components/UserProfile";
+// import SearchUser from "./components/SearchUser";
 function App() {
   return (
     <div className="App">
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Navbar />}>
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<Aboutus />} />
@@ -19,7 +19,7 @@ function App() {
           <Route path="/search" element={<SearchUser />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
+      </Routes> */}
     </div>
   );
 }

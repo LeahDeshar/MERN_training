@@ -1,16 +1,18 @@
 import { View, Text, Switch, StyleSheet, useColorScheme } from "react-native";
 import React, { useState } from "react";
+import ThemeProvider from "../constants/ThemeProvider";
 
 const Layout = () => {
-  const [toggle, setToggle] = useState(false);
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-  console.log(colorScheme);
+  // const [toggle, setToggle] = useState(false);
+  // const { colorScheme, toggleColorScheme } = useColorScheme();
   return (
-    <View style={styles.container}>
-      <Text>Theme Changer</Text>
+    <ThemeProvider>
+      <View style={styles.container}>
+        <Text>Theme Changer</Text>
 
-      <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} />
-    </View>
+        {/* <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} /> */}
+      </View>
+    </ThemeProvider>
   );
 };
 

@@ -3,11 +3,7 @@ import React from "react";
 import { Redirect } from "expo-router";
 
 const index = () => {
-  return (
-    <View>
-      <Redirect to="/home" />
-    </View>
-  );
+  return <Redirect to="(tabs)" />;
 };
 
 export default index;

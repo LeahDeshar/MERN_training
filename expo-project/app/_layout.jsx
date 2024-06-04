@@ -7,15 +7,8 @@ import { Stack } from "expo-router";
 const Layout = () => {
   return (
     <ThemeProvider>
-      {/* <View style={styles.container}>
-        <HomeScreen />
-      </View> */}
       <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          // remove header title
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

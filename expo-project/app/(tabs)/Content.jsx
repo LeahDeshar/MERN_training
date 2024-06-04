@@ -2,10 +2,13 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import HomeScreen from "../home/HomeScreen";
 import ContentScreen from "../home/ContentScreen";
+import { useTheme } from "../../constants/ThemeProvider";
 
 const Content = () => {
+  const { colors } = useTheme();
+
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <ContentScreen />
     </View>
   );

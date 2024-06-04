@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import HomeScreen from "../home/HomeScreen";
 import { useTheme } from "../../constants/ThemeProvider";
-// import { useTheme } from "../../constants/ThemeProvider";
 
 const Home = () => {
   const { colors, setScheme, dark } = useTheme();

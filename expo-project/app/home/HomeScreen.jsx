@@ -5,8 +5,7 @@ const HomeScreen = () => {
   const { colors, setScheme, dark } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.text, { color: colors.text }]}>Hello, Expo!</Text>
+    <View>
       <Button
         title={`Switch to ${dark ? "Light" : "Dark"} Theme`}
         onPress={() => setScheme(dark ? "light" : "dark")}
@@ -17,9 +16,9 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
   },
   text: {
     fontSize: 18,

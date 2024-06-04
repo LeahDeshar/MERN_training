@@ -1,7 +1,6 @@
-import { View, Text, Switch, StyleSheet, useColorScheme } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import React from "react";
 import { ThemeProvider } from "../constants/ThemeProvider";
-import HomeScreen from "./home/HomeScreen";
 import { Stack } from "expo-router";
 
 const Layout = () => {

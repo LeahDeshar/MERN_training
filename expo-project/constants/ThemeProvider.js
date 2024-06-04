@@ -1,32 +1,32 @@
+import React, { createContext, useEffect, useState, useContext } from "react";
 import { useColorScheme } from "react-native";
-import React, { createContext, useEffect, useState } from "react";
-import { LightColors, DarkColors } from "./Colors";
-export const ThemeContext = () =>
-  createContext({
-    dark: false,
-    colors: DarkColors,
-    setScheme: () => {},
-  });
-const ThemeProvider = (props) => {
-  const colorScheme = useColorScheme(colorScheme == "dark");
-  const [isDark, setIsDark] = useState(colorScheme == "dark");
+import { Colors } from "@/constants/Colors";
+
+const ThemeContext = createContext({
+  dark: false,
+  colors: Colors.light,
+  setScheme: () => {},
+});
+
+export const ThemeProvider = ({ children }) => {
+  const colorScheme = useColorScheme();
+  const [isDark, setIsDark] = useState(colorScheme === "dark");
 
   useEffect(() => {
-    setIsDark(colorScheme == "dark");
+    setIsDark(colorScheme === "dark");
   }, [colorScheme]);
 
   const defaultTheme = {
     dark: isDark,
-    colors: isDark ? DarkColors : LightColors,
-    setScheme: (scheme) => setIsDark(scheme),
+    colors: isDark ? Colors.dark : Colors.light,
+    setScheme: (scheme) => setIsDark(scheme === "dark"),
   };
+
   return (
     <ThemeContext.Provider value={defaultTheme}>
-      {props.children}
+      {children}
     </ThemeContext.Provider>
   );
 };
-
-export default ThemeProvider;
 
 export const useTheme = () => useContext(ThemeContext);

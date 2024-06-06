@@ -10,7 +10,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="Home"
+        name="home"
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
@@ -22,7 +22,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Settings"
+        name="settings"
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
@@ -34,7 +34,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Content"
+        name="content"
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons

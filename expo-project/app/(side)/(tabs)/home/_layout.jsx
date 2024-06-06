@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
-import { useTheme } from "../../constants/ThemeProvider";
 import { useRouter } from "expo-router";
+import { useTheme } from "../../../../constants/ThemeProvider";
 const HomeScreen = () => {
   const { colors, setScheme, dark } = useTheme();
   const navigator = useRouter();

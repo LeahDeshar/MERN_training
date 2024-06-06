@@ -11,7 +11,7 @@ const HomeScreen = () => {
         title={`Switch to ${dark ? "Light" : "Dark"} Theme`}
         onPress={() => setScheme(dark ? "light" : "dark")}
       />
-      <Button onPress={() => navigator.push("(side)/")} title="click" />
+      <Button onPress={() => navigator.push("(side)")} title="click" />
     </View>
   );
 };

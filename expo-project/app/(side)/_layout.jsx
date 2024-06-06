@@ -4,12 +4,12 @@ import { Drawer } from "expo-router/drawer";
 
 export default function DrawerLayout() {
   return (
-    <Drawer>
-      <Drawer.Screen
-        name="settings"
+    <Drawer screenOptions={{ headerShown: false }}>
+      {/* <Drawer.Screen
+        name="(side)/(tabs)/Setting"
         options={{ drawerLabel: "Settings" }}
-        component={Settings}
-      />
+      /> */}
+      <Drawer.Screen name="(side)/(tabs)/Settings" />
     </Drawer>
   );
 }

@@ -10,3 +10,5 @@ async function init() {
   const result = await client.rpop("messages");
   console.log(result);
 }
+
+init();

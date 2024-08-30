@@ -1,11 +1,9 @@
 import Link from "next/link";
 import classes from "./page.module.css";
 import MealGrid from "@/components/meals/meals-grid";
-import { useEffect } from "react";
-export default function MealPage() {
-  useEffect(() => {
-    fetch();
-  }, []);
+import { getMeals } from "@/lib/meals";
+export default async function MealPage() {
+  const meals = await getMeals();
   return (
     <>
       <header className={classes.header}>
@@ -21,7 +19,7 @@ export default function MealPage() {
         </p>
       </header>
       <main className={classes.main}>
-        <MealGrid />
+        <MealGrid meals={meals} />
       </main>
     </>
   );

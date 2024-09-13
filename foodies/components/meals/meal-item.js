@@ -4,11 +4,14 @@ import Image from "next/image";
 import classes from "./meal-item.module.css";
 
 export default function MealItem({ title, slug, image, summary, creator }) {
+  console.log({ title, slug, image, summary, creator });
   return (
     <article className={classes.meal}>
       <header>
         <div className={classes.image}>
-          <Image src={image} alt={title} fill />
+          {/* <Image src={`${"/assets/" + image}`} alt={title} fill /> */}
+
+          <Image src={image} fill alt={title} />
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>

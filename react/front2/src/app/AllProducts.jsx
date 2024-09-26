@@ -6,7 +6,7 @@ import {
 
 function AllProducts() {
   //   const { data, isError, isLoading } = useGetAllProductsQuery();
-  const { data, isError, isLoading } = useGetProductQuery(1);
+  const { data, isError, isLoading } = useGetProductQuery(195);
   console.log(data);
   return (
     <div>
@@ -18,9 +18,9 @@ function AllProducts() {
       ) : (
         <div>
           <h2>
-            {data.name} {data.id}
+            {data?.name} {data?.id}
           </h2>
-          <p>{data.description}</p>
+          <p>{data?.description}</p>
         </div>
       )}
       {/* {isLoading && <p>Loading...</p>}

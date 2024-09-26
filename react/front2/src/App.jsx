@@ -2,6 +2,7 @@ import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./app/features/counter/counterSlice";
 import AllProducts from "./app/AllProducts";
+import AddNewProduct from "./app/features/AddNewProduct";
 
 function App() {
   const count = useSelector((state) => state.counter.value);
@@ -16,6 +17,7 @@ function App() {
         <button onClick={() => dispatch(decrement())}>-</button>
       </div>
       <AllProducts />
+      <AddNewProduct />
     </>
   );
 }

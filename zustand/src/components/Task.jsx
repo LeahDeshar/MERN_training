@@ -1,6 +1,7 @@
+import classNames from "classnames";
 import "./Task.css";
 
-const STATUS = "PlANNED";
+const STATUS = "PLANNED";
 export default function Task({ title }) {
   return (
     <div className="task">
@@ -8,7 +9,6 @@ export default function Task({ title }) {
       <div className="bottomWrapper">
         <div></div>
         <div className={classNames("status", STATUS)}>{STATUS}</div>
-        {/* <div className={classNames}></div> */}
       </div>
     </div>
   );

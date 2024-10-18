@@ -4,11 +4,11 @@ import { rateLimit } from "express-rate-limit";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-// import connectDB from "./db/config";
-// import router from "./routes/userRoutes";
-// import productRouter from "./routes/productRoutes";
-// import categoryRouter from "./routes/categoryRoute";
-// import orderRouter from "./routes/orderRoutes";
+import connectDB from "./db/config";
+import router from "./routes/userRoutes";
+import productRouter from "./routes/productRoutes";
+import categoryRouter from "./routes/categoryRoute";
+import orderRouter from "./routes/orderRoutes";
 // import emailRouter from "./routes/emailRouter";
 import helmet from "helmet";
 import nodemailer from "nodemailer";
@@ -16,10 +16,7 @@ import ExpressMongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cloudinary from "cloudinary";
 import Stripe from "stripe";
-import redis from "redis";
-
-const redisClient = redis.createClient();
-redisClient.on("error", (err) => console.error("Redis Client Error", err));
+colors.enable();
 
 const app = express();
 app.use(cors({ origin: "http://192.168.1.3" }));
@@ -89,7 +86,7 @@ app.use(cookieParser());
 //   api_secret: process.env.CLOUDINARY_SECRET,
 // });
 
-// connectDB();
+connectDB();
 
 // stripe configuration
 // export const stripe = new Stripe(process.env.STRIPE_API_SCERET);
@@ -98,17 +95,16 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello");
 });
 
-// app.use("/api/v1/user", router);
-// app.use("/api/v1/products", productRouter);
+app.use("/api/v1/user", router);
+app.use("/api/v1/products", productRouter);
 // app.use("/api/v1/category", categoryRouter);
 // app.use("/api/v1/order", orderRouter);
 // app.use("/api/v1", emailrouter);
 
 // // app.use("/api/v1/email", emailRouter);
-// const PORT = process.env.PORT || 8000;
-// app.listen(PORT, () => {
-//   console.log(
-//     `Server is running on port ${PORT} on ${process.env.NODE_ENV} mode`.bgCyan
-//       .white
-//   );
-// });
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(
+    `Server is running on port ${PORT} on ${process.env.NODE_ENV} mode`.bgYellow
+  );
+});

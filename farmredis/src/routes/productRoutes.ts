@@ -1,14 +1,10 @@
 import express from "express";
 import {
   createproductController,
-  deleteImageProductController,
-  deleteProductController,
   getAllFromSpecFarmerProductController,
   getAllProductController,
   getOneProductController,
   getTopProductController,
-  updateImageProductController,
-  updateProductController,
 } from "../controllers/productController";
 import { isAdmin, isAuth, isFarmer } from "../middleware/authMiddleware";
 import { singleUpload } from "../middleware/multer";
@@ -23,30 +19,30 @@ router.get("/getTop", getTopProductController);
 router.get("/getOne/:id", getOneProductController);
 
 // for famer
-router.get(
-  "/getAllProduct",
-  isAuth,
-  isFarmer,
-  getAllFromSpecFarmerProductController
-);
+// router.get(
+//   "/getAllProduct",
+//   isAuth,
+//   isFarmer,
+//   getAllFromSpecFarmerProductController
+// );
 
-router.post("/create", isAuth, isFarmer, singleUpload, createproductController);
+// router.post("/create", isAuth, isFarmer, singleUpload, createproductController);
 // update the product only
-router.put("/update/:id", isAuth, isFarmer, updateProductController);
+// router.put("/update/:id", isAuth, isFarmer, updateProductController);
 // update the product images
-router.put(
-  "/updateImage/:id",
-  isAuth,
-  isFarmer,
-  singleUpload,
-  updateImageProductController
-);
+// router.put(
+//   "/updateImage/:id",
+//   isAuth,
+//   isFarmer,
+//   singleUpload,
+//   updateImageProductController
+// );
 
-router.delete("/delete/:id", isAuth, isFarmer, deleteProductController);
-router.delete(
-  "/deleteImage/:id",
-  isAuth,
-  isAdmin,
-  deleteImageProductController
-);
+// router.delete("/delete/:id", isAuth, isFarmer, deleteProductController);
+// router.delete(
+//   "/deleteImage/:id",
+//   isAuth,
+//   isAdmin,
+//   deleteImageProductController
+// );
 export default router;

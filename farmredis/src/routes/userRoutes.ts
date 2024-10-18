@@ -28,12 +28,12 @@ router.post("/login", limiter, loginController);
 // token
 // create authentication middleware
 
-router.get("/profile", isAuth, getUserProfileController);
-router.get("/logout", isAuth, logoutController);
+// router.get("/profile", isAuth, getUserProfileController);
+// router.get("/logout", isAuth, logoutController);
 
-router.put("/profileUpdate", isAuth, profileUpdateController);
-router.put("/passUpdate", isAuth, passUpdateController);
-router.put("/picUpdate", isAuth, singleUpload, profilePicUpdateController);
-router.post("/resetPassword", resetPasswordController);
+// router.put("/profileUpdate", isAuth, profileUpdateController);
+// router.put("/passUpdate", isAuth, passUpdateController);
+// router.put("/picUpdate", isAuth, singleUpload, profilePicUpdateController);
+// router.post("/resetPassword", resetPasswordController);
 
 export default router;

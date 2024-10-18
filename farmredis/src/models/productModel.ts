@@ -1,6 +1,11 @@
-import mongoose from "mongoose";
-//REVIEW MODELS
-const reviewSchema = new mongoose.Schema(
+import mongoose, { Document, Schema } from "mongoose";
+
+interface IReview extends Document {
+  rating: number;
+  comment: string;
+  user: mongoose.Schema.Types.ObjectId;
+}
+const reviewSchema = new Schema<IReview>(
   {
     rating: {
       type: Number,
@@ -17,8 +22,23 @@ const reviewSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-// PRODUCT MODELS
-const productSchema = new mongoose.Schema(
+interface IProduct extends Document {
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  category: mongoose.Schema.Types.ObjectId;
+  images: {
+    public_id: string;
+    url: string;
+  };
+  farmer: mongoose.Schema.Types.ObjectId;
+  reviews: [typeof reviewSchema];
+  rating: number;
+  numReviews: number;
+}
+
+const productSchema = new Schema<IProduct>(
   {
     name: {
       type: String,
@@ -67,5 +87,5 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const productModel = mongoose.model("Products", productSchema);
+export const productModel = mongoose.model<IProduct>("Products", productSchema);
 export default productModel;

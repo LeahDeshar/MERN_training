@@ -1,6 +1,6 @@
-import Category from "../models/categoryModel.js";
-import Product from "../models/productModel.js";
-import { getDataUri } from "../utils/features.js";
+import Category from "../models/categoryModel";
+import Product from "../models/productModel";
+import { getDataUri } from "../utils/features";
 import cloudinary from "cloudinary";
 
 export async function createCategory(req, res) {

@@ -1,0 +1,21 @@
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
+import helmet from "helmet";
+import ExpressMongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
+import redis from "redis";
+const redisClient = redis.createClient();
+redisClient.on("error", (err) => console.error("Redis Client Error", err));
+const app = express();
+app.use(cors({ origin: "http://192.168.1.3" }));
+app.use(helmet());
+app.use(ExpressMongoSanitize());
+dotenv.config();
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(cookieParser());
+app.get("/", (req, res) => {
+    res.send("Hello");
+});

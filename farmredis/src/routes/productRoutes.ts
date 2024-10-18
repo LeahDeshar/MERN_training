@@ -9,9 +9,9 @@ import {
   getTopProductController,
   updateImageProductController,
   updateProductController,
-} from "../controllers/productController.js";
-import { isAdmin, isAuth, isFarmer } from "../middleware/authMiddleware.js";
-import { singleUpload } from "../middleware/multer.js";
+} from "../controllers/productController";
+import { isAdmin, isAuth, isFarmer } from "../middleware/authMiddleware";
+import { singleUpload } from "../middleware/multer";
 
 const router = express.Router();
 

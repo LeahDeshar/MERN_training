@@ -1,7 +1,7 @@
-// create get all product controller
-import categoryModel from "../models/categoryModel.js";
-import Products from "../models/productModel.js";
-import { getDataUri } from "../utils/features.js";
+import redisClient from "../db/redisConfig";
+import categoryModel from "../models/categoryModel";
+import Products from "../models/productModel";
+import { getDataUri } from "../utils/features";
 import cloudinary from "cloudinary";
 
 // export async function getAllProductController(req, res) {
@@ -36,10 +36,24 @@ import cloudinary from "cloudinary";
 // }
 export const getAllProductController = async (req, res) => {
   try {
+    const cachedProducts = await redisClient.get("allProducts");
+
+    if (cachedProducts) {
+      console.log("we have cached", cachedProducts);
+      return res.status(200).json({
+        success: true,
+        products: JSON.parse(cachedProducts),
+        total: JSON.parse(cachedProducts).length,
+      });
+    }
+
     const products = await Products.find()
       .populate("farmer")
       .populate("category");
 
+    await redisClient.set("allProducts", JSON.stringify(products), {
+      EX: 3600,
+    });
     return res.status(200).json({
       success: true,
       products: products,

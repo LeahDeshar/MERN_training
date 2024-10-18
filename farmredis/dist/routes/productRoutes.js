@@ -1,0 +1,15 @@
+import express from "express";
+import { createproductController, deleteImageProductController, deleteProductController, getAllFromSpecFarmerProductController, getAllProductController, getOneProductController, getTopProductController, updateImageProductController, updateProductController, } from "../controllers/productController";
+import { isAdmin, isAuth, isFarmer } from "../middleware/authMiddleware";
+import { singleUpload } from "../middleware/multer";
+const router = express.Router();
+router.get("/getAll", getAllProductController);
+router.get("/getTop", getTopProductController);
+router.get("/getOne/:id", getOneProductController);
+router.get("/getAllProduct", isAuth, isFarmer, getAllFromSpecFarmerProductController);
+router.post("/create", isAuth, isFarmer, singleUpload, createproductController);
+router.put("/update/:id", isAuth, isFarmer, updateProductController);
+router.put("/updateImage/:id", isAuth, isFarmer, singleUpload, updateImageProductController);
+router.delete("/delete/:id", isAuth, isFarmer, deleteProductController);
+router.delete("/deleteImage/:id", isAuth, isAdmin, deleteImageProductController);
+export default router;

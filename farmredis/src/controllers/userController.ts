@@ -1,5 +1,5 @@
-import Users from "../models/userModel.js";
-import { getDataUri } from "../utils/features.js";
+import Users from "../models/userModel";
+import { getDataUri } from "../utils/features";
 import cloudinary from "cloudinary";
 
 export const registerController = async (req, res) => {

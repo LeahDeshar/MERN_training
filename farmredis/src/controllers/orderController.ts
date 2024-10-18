@@ -1,6 +1,6 @@
-import Order from "../models/orderModel.js"
-import Products from "../models/productModel.js"
-import { stripe } from "../index.js"
+import Order from "../models/orderModel"
+import Products from "../models/productModel"
+import { stripe } from "../index"
 
 export async function createOrderController(req,res){
  try {

@@ -1,0 +1,13 @@
+import express from "express";
+import { isAdmin, isAuth } from "../middleware/authMiddleware";
+import { StripePaymentController, createOrderController, deleteOrderController, getAllOrderAdminController, getAllOrderController, getSingleOrderController, updateOrderAdminController, updateOrderController, } from "../controllers/orderController";
+const router = express.Router();
+router.post("/create", isAuth, createOrderController);
+router.get("/getAll", isAuth, getAllOrderController);
+router.get("/getOne/:id", isAuth, getSingleOrderController);
+router.post("/payments", isAuth, StripePaymentController);
+router.delete("/delete/:id", isAuth, deleteOrderController);
+router.put("/update/:id", isAuth, updateOrderController);
+router.get("/admin/getAll", isAuth, isAdmin, getAllOrderAdminController);
+router.put("/admin/updateOrder/:id", isAuth, isAdmin, updateOrderAdminController);
+export default router;

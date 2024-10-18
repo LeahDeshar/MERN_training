@@ -1,2 +1,7 @@
 .env
 node_modules
+src/controllers
+src/db
+src/models
+src/routes
+

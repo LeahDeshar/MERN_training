@@ -1,7 +1,0 @@
-import express from "express";
-import { isAuth } from "../middleware/authMiddleware";
-
-const router = express.Router();
-
-router.get("/sendEmail", isAuth, async (req, res) => {});
-export default router;

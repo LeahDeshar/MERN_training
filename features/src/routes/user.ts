@@ -15,6 +15,7 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 router.post("/create-avatar", isAuth, singleUpload, createAvatarController);
+
 router.post("/follow/:id", isAuth, followUserController);
 router.post("/unfollow/:id", isAuth, unfollowUserController);
 

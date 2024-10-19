@@ -286,6 +286,109 @@ export const unfollowUserController = async (
   }
 };
 
+export const sendFriendRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(400).json({
+        msg: "request body not send",
+        success: false,
+      });
+      return;
+    }
+    const recipientId = req.params.id;
+    const recipientIdObj = new mongoose.Types.ObjectId(recipientId);
+    const currentUserId = req.user._id; // Assuming you have user ID in req.user
+
+    // Check if already sent
+    const currentUser = await Users.findById(currentUserId);
+
+    if (currentUser?.friendRequestsSent.includes(recipientIdObj)) {
+      res.status(400).json({ message: "Friend request already sent." });
+    }
+
+    // Send the friend request
+    await Users.findByIdAndUpdate(currentUserId, {
+      $addToSet: { friendRequestsSent: recipientId },
+    });
+
+    await Users.findByIdAndUpdate(recipientId, {
+      $addToSet: { friendRequestsReceived: currentUserId },
+    });
+
+    res.status(200).json({ message: "Friend request sent successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error });
+  }
+};
+
+export const acceptFriendRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(400).json({
+        msg: "request body not send",
+        success: false,
+      });
+      return;
+    }
+    const requesterId = req.params.id; // User ID who sent the request
+    const currentUserId = req.user._id; // Assuming you have user ID in req.user
+
+    // Remove from friend requests
+    await Users.findByIdAndUpdate(currentUserId, {
+      $pull: { friendRequestsReceived: requesterId },
+    });
+
+    await Users.findByIdAndUpdate(requesterId, {
+      $pull: { friendRequestsSent: currentUserId },
+      $addToSet: { friends: currentUserId },
+    });
+
+    await Users.findByIdAndUpdate(currentUserId, {
+      $addToSet: { friends: requesterId },
+    });
+
+    res.status(200).json({ message: "Friend request accepted." });
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error });
+  }
+};
+
+export const declineFriendRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(400).json({
+        msg: "request body not send",
+        success: false,
+      });
+      return;
+    }
+    const requesterId = req.params.id;
+    const currentUserId = req.user._id; // Assuming you have user ID in req.user
+
+    // Remove from friend requests
+    await Users.findByIdAndUpdate(currentUserId, {
+      $pull: { friendRequestsReceived: requesterId },
+    });
+
+    await Users.findByIdAndUpdate(requesterId, {
+      $pull: { friendRequestsSent: currentUserId },
+    });
+
+    res.status(200).json({ message: "Friend request declined." });
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error });
+  }
+};
+
 // export const getUserProfileController = async (
 //   req: RequestWithUser,
 //   res: Response

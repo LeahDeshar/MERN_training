@@ -1,3 +1,10 @@
 - [x] Create the models,controller and routes for user (auth- login and register)
 - [x] create avatar (add profile picture)
+- [x] follow and unfollow features
+- [x] send,decline or accept friend request
+- [ ] Get profile of the user and access profile of other users
+- [ ] socket implementation
+- [ ] create post
+- [ ] comment on post
+- [ ] reaction on post
 - [ ]

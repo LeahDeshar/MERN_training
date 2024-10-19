@@ -1,8 +1,9 @@
 import { Request, RequestHandler, Response } from "express";
-import Users, { IUser } from "../models/user";
+import Users from "../models/user";
 import { getDataUri } from "../utils/features";
 import cloudinary from "cloudinary";
 import mongoose, { Types } from "mongoose";
+
 declare module "express-serve-static-core" {
   interface Request {
     user?: User;

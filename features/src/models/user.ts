@@ -18,6 +18,7 @@ export interface IUser extends Document {
   isValidPassword(password: string): Promise<boolean>;
   generateJWT(): string;
 }
+
 const userSchema = new Schema<IUser>(
   {
     username: {
@@ -69,7 +70,7 @@ userSchema.methods.isValidPassword = async function (password: string) {
     throw error;
   }
 };
-// token generate
+
 userSchema.methods.generateJWT = function () {
   return JWT.sign(
     {

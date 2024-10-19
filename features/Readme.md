@@ -1,3 +1,3 @@
-- Images
-- Container
--
+- [x] Create the models,controller and routes for user (auth- login and register)
+- [x] create avatar (add profile picture)
+- [ ]

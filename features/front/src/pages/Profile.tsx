@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createAvatar,
+  followUser,
   getAllUsers,
   getCurrentUser,
+  unfollowUser,
 } from "../redux/Features/auth/authAction";
 import store from "../redux/store";
+import { io } from "socket.io-client";
 
 function Profile() {
   // access the data from redux store
@@ -104,36 +107,143 @@ const AvatarUpload = () => {
   );
 };
 
-// component to show all the users with follow button
+// export const Users = () => {
+//   const { users } = useSelector((state: any) => state.auth);
+//   const { user } = useSelector((state: any) => state.auth);
+//   const [notifications, setNotifications] = useState<string[]>([]);
+//   let userId = "";
+//   if (user) {
+//     userId = user?._id;
+//   }
+
+//   useEffect(() => {
+//     const socket = io("http://localhost:8080"); // Replace with your backend URL
+
+//     if (userId) {
+//       socket.emit("register", userId);
+//     }
+
+//     socket.on("follow", (data) => {
+//       if (data.followedId === userId) {
+//         setNotifications((prevNotifications) => [
+//           ...prevNotifications,
+//           `User ${data.followerId} started following you`,
+//         ]);
+//         console.log("follow", data);
+//       }
+//     });
+//     return () => {
+//       socket.disconnect();
+//     };
+//   }, [userId]);
+
+//   const dispatch = useDispatch();
+
+//   const handleFollowButton = async (id) => {
+//     await dispatch(followUser(id)).unwrap();
+//     console.log("follow button clicked", id);
+//   };
+//   return (
+//     <div>
+//       <p
+//         style={{
+//           fontSize: "2rem",
+//           fontWeight: "bold",
+//         }}
+//       >
+//         Users
+//       </p>
+//       <div
+//         style={{
+//           display: "flex",
+//           flexDirection: "row",
+//         }}
+//       >
+//         {users?.map((user) => (
+//           <div
+//             key={user._id}
+//             style={{
+//               marginInline: 10,
+//             }}
+//           >
+//             <p>{user.username}</p>
+//             <button onClick={() => handleFollowButton(user._id)}>Follow</button>
+//           </div>
+//         ))}
+//       </div>
+
+//       <div>
+//         <h3>Notifications</h3>
+//         {notifications?.map((notification, index) => (
+//           <p key={index}>{notification}</p>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
 export const Users = () => {
-  const { users } = useSelector((state: any) => state.auth);
+  const { users } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const [notifications, setNotifications] = useState<string[]>([]);
+  const [followedUsers, setFollowedUsers] = useState<string[]>([]); // Track followed users
+  const dispatch = useDispatch();
+
+  let userId = user?._id || "";
+
+  useEffect(() => {
+    const socket = io("http://localhost:8080"); // Replace with your backend URL
+
+    if (userId) {
+      socket.emit("register", userId);
+    }
+
+    socket.on("follow", (data) => {
+      if (data.followerId === userId) {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          `User ${data.followerId} started following you`,
+        ]);
+        console.log("follow", data);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [userId]);
+
+  const handleFollowButton = async (id: string) => {
+    if (followedUsers.includes(id)) {
+      await dispatch(unfollowUser(id)).unwrap();
+      setFollowedUsers(followedUsers.filter((userId) => userId !== id));
+    } else {
+      await dispatch(followUser(id)).unwrap();
+      setFollowedUsers([...followedUsers, id]);
+    }
+    console.log("Follow/unfollow button clicked", id);
+  };
 
   return (
     <div>
-      <p
-        style={{
-          fontSize: "2rem",
-          fontWeight: "bold",
-        }}
-      >
-        Users
-      </p>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        {users?.map((user) => (
-          <div
-            key={user._id}
-            style={{
-              marginInline: 10,
-            }}
-          >
-            <p>{user.username}</p>
-            <button>Follow</button>
+      <p style={{ fontSize: "2rem", fontWeight: "bold" }}>Users</p>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        {users?.map((otherUser) => (
+          <div key={otherUser._id} style={{ marginInline: 10 }}>
+            <p>{otherUser.username}</p>
+            {otherUser._id !== userId && ( // Hide the button for the current user
+              <button onClick={() => handleFollowButton(otherUser._id)}>
+                {followedUsers.includes(otherUser._id) ? "Unfollow" : "Follow"}
+              </button>
+            )}
           </div>
+        ))}
+      </div>
+
+      <div>
+        <h3>Notifications</h3>
+        {notifications?.map((notification, index) => (
+          <p key={index}>{notification}</p>
         ))}
       </div>
     </div>

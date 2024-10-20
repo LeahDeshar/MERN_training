@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createAvatar,
+  followUser,
   getAllUsers,
   getCurrentUser,
+  unfollowUser,
   userLogin,
   userRegister,
 } from "./authAction";
@@ -103,6 +105,34 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(createAvatar.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+
+    // follow user
+    builder.addCase(followUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(followUser.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(followUser.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+
+    // unfollow
+    builder.addCase(unfollowUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(unfollowUser.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(unfollowUser.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

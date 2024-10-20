@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -15,6 +15,19 @@ function App() {
   return (
     <Router>
       <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/blog">Blog</Link>
+            </li>
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+          </ul>
+        </nav>
         <Routes>
           <Route path="/contact" element={<Contact />} />
           <Route

@@ -128,3 +128,39 @@ export const getAllUsers = createAsyncThunk(
     }
   }
 );
+
+// for follow user
+export const followUser = createAsyncThunk(
+  "auth/followUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await API.post(`/user/follow/${userId}`);
+
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message || "Something went wrong");
+      }
+    }
+  }
+);
+
+// for unfollow
+export const unfollowUser = createAsyncThunk(
+  "auth/unfollowUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await API.post(`/user/unfollow/${userId}`);
+
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message || "Something went wrong");
+      }
+    }
+  }
+);

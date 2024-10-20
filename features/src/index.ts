@@ -33,9 +33,10 @@ import cloudinary from "cloudinary";
 import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./db/config";
-import router from "./routes/user";
+// import router from "./routes/user";
 import { Server } from "socket.io";
 import http from "http";
+import setupRoutes from "./routes/user";
 
 const app = express();
 dotenv.config();
@@ -55,7 +56,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World with TypeScript!");
 });
 
-app.use("/api/v1/user", router);
+// app.use("/api/v1/user", router);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -63,6 +64,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+app.use("/api/v1/user", setupRoutes(io));
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);

@@ -3,7 +3,7 @@
 - [x] follow and unfollow features
 - [x] send,decline or accept friend request
 - [ ] Get profile of the user and access profile of other users
-- [ ] socket implementation
+- [x] socket implementation
 - [ ] create post
 - [ ] comment on post
 - [ ] reaction on post

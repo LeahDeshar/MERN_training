@@ -4,7 +4,7 @@
 - [x] send,decline or accept friend request
 - [ ] Get profile of the user and access profile of other users
 - [x] socket implementation
-- [ ] create post
+- [x] post operation
 - [ ] comment on post
 - [ ] reaction on post
 - [ ] jest

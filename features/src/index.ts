@@ -37,6 +37,9 @@ import connectDB from "./db/config";
 import { Server } from "socket.io";
 import http from "http";
 import setupRoutes from "./routes/user";
+import setupPostRoutes from "./routes/posts";
+import setupCommentRoutes from "./routes/comment";
+import setupReactionRoutes from "./routes/reaction";
 
 const app = express();
 dotenv.config();
@@ -64,18 +67,29 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
 app.use("/api/v1/user", setupRoutes(io));
+app.use("/api/v1/post", setupPostRoutes(io));
+app.use("/api/v1/comments", setupCommentRoutes(io));
+app.use("/api/v1/reaction", setupReactionRoutes(io));
+
+export const connectedUsers = new Map<string, string>();
 
 io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+  console.log(`New user connected: ${socket.id}`);
 
-  socket.on("message", (msg) => {
-    console.log("Message received:", msg);
-    socket.broadcast.emit("message", msg);
+  socket.on("register", (userId: string) => {
+    connectedUsers.set(userId, socket.id);
+    console.log(`User registered: ${userId} with socket ID: ${socket.id}`);
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    connectedUsers.forEach((socketId, userId) => {
+      if (socketId === socket.id) {
+        connectedUsers.delete(userId);
+        console.log(`User disconnected: ${userId}`);
+      }
+    });
   });
 });
 

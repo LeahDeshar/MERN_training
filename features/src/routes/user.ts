@@ -44,7 +44,6 @@ import { singleUpload } from "../middleware/multer";
 
 const router = express.Router();
 
-// This function takes the Socket.IO instance as an argument
 const setupRoutes = (io: Server) => {
   router.post("/register", registerController);
   router.post("/login", loginController);

@@ -2,6 +2,7 @@ import mongoose, { CallbackError, Document, Schema } from "mongoose";
 
 interface IPost extends Document {
   content: string;
+  title: string;
   author: mongoose.Schema.Types.ObjectId;
   createdAt: Date;
   likes: mongoose.Schema.Types.ObjectId[];
@@ -13,6 +14,7 @@ interface IPost extends Document {
 }
 
 const postSchema = new Schema<IPost>({
+  title: { type: String, required: true },
   content: { type: String, required: true },
   profilePic: {
     public_id: {

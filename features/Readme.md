@@ -5,6 +5,6 @@
 - [ ] Get profile of the user and access profile of other users
 - [x] socket implementation
 - [x] post operation
-- [ ] comment on post
-- [ ] reaction on post
+- [x] comment on post
+- [x] reaction on post
 - [ ] jest

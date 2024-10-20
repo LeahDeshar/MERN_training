@@ -9,36 +9,47 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import Blog from "./pages/Blog";
 function App() {
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
             path="/"
             element={
-              <Home />
-              // <ProtectedRoute>
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blog"
+            element={
+              <ProtectedRoute>
+                <Blog />
+              </ProtectedRoute>
             }
           />
 
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
-            path="/login"
+            path="/about"
             element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
+              <ProtectedRoute>
+                <About />
+              </ProtectedRoute>
             }
           />
           <Route path="*" element={<NotFound />} />

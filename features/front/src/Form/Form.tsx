@@ -1,34 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import InputType from "./InputType";
-// import { handleLogin, handleRegister } from "../../../services/authService";
+import { handleLogin, handleRegister } from "../services/authService";
 
 function Form({ formType, submitBtn, formTitle }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const [name, setName] = useState("");
 
   return (
     <div>
       <form
-      // onSubmit={(e) => {
-      //   if (formType === "login")
-      //     return handleLogin(e, email, password, role);
-      //   else if (formType === "register")
-      //     return handleRegister(
-      //       e,
-      //       name,
-      //       role,
-      //       email,
-      //       password,
-      //       phone,
-      //       organisationName,
-      //       address,
-      //       hospitalName,
-      //       website
-      //     );
-      // }}
+        onSubmit={(e) => {
+          if (formType === "login") return handleLogin(e, email, password);
+          else if (formType === "register")
+            return handleRegister(e, userName, email, password);
+        }}
       >
         <h1 className="text-center">{formTitle}</h1>
         <hr />

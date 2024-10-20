@@ -1,4 +1,7 @@
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { getAllUsers, getCurrentUser } from "../redux/Features/auth/authAction";
+import { useEffect } from "react";
 
 function Home() {
   const navigate = useNavigate();
@@ -6,6 +9,12 @@ function Home() {
     localStorage.clear();
     navigate("/login");
   };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(getAllUsers());
+  }, [dispatch]);
   return (
     <div>
       <button onClick={handleLogout}>Logout</button>

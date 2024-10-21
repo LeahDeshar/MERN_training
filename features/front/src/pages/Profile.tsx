@@ -21,6 +21,11 @@ function Profile() {
   const userId = user?._id || "";
 
   useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(getAllUsers());
+  }, [dispatch]);
+
+  useEffect(() => {
     const socket = io("http://localhost:8080");
 
     if (userId) {

@@ -38,6 +38,7 @@ export const registerController = async (
 
     console.log(req.body);
     if (!username || !email || !password) {
+      console.log("problem");
       res.status(400).json({
         msg: "Fill all the fields",
         success: false,
@@ -128,6 +129,75 @@ export const loginController = async (
     res.status(400).json({
       msg: "Internal Error (login)",
       success: false,
+      error,
+    });
+  }
+};
+export const currentUserController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    console.log("here");
+    if (!req.user) {
+      res.status(400).json({
+        msg: "request body not send",
+        success: false,
+      });
+      return;
+    }
+    const user = await Users.findById(req.user._id);
+    res.status(200).json({
+      message: "Fetched user successfully",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to get current user",
+      success: false,
+      error,
+    });
+  }
+};
+
+export const getAllUsersController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(400).json({
+        msg: "request body not send",
+        success: false,
+      });
+      return;
+    }
+    const user = await Users.findById(req.user._id);
+
+    if (!user) {
+      res.status(400).json({
+        msg: "User not found",
+        success: false,
+      });
+      return;
+    }
+
+    // find and send all the users except the current user
+    const users = await Users.find({ _id: { $ne: req.user._id } }).select(
+      "-password"
+    );
+    // const users = await Users.find({}).select("-password");
+    // // send all users except the current itself
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch users",
       error,
     });
   }

@@ -8,3 +8,7 @@
 - [x] comment on post
 - [x] reaction on post
 - [ ] jest
+
+- [x] create frontend, router ,persist, redux toolkit
+- [x] auth,profile
+- [ ] implement socket

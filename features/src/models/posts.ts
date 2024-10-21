@@ -7,7 +7,7 @@ interface IPost extends Document {
   createdAt: Date;
   likes: mongoose.Schema.Types.ObjectId[];
   comments: mongoose.Schema.Types.ObjectId[];
-  profilePic?: {
+  postImage?: {
     public_id?: string;
     url?: string;
   };
@@ -16,7 +16,7 @@ interface IPost extends Document {
 const postSchema = new Schema<IPost>({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  profilePic: {
+  postImage: {
     public_id: {
       type: String,
     },

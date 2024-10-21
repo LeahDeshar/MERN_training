@@ -38,6 +38,8 @@ import {
   sendFriendRequest,
   acceptFriendRequest,
   declineFriendRequest,
+  currentUserController,
+  getAllUsersController,
 } from "../controllers/user";
 import { isAuth } from "../middleware/authMiddleware";
 import { singleUpload } from "../middleware/multer";
@@ -48,6 +50,8 @@ const setupRoutes = (io: Server) => {
   router.post("/register", registerController);
   router.post("/login", loginController);
 
+  router.get("/get-current-user", isAuth, currentUserController);
+  router.get("/get-all-users", isAuth, getAllUsersController);
   router.post("/create-avatar", isAuth, singleUpload, createAvatarController);
 
   router.post("/follow/:id", isAuth, (req, res) => {
@@ -57,7 +61,7 @@ const setupRoutes = (io: Server) => {
     }
 
     followUserController(req, res);
-    io.emit("follow", { userId: req.params.id, followerId: req.user._id }); // Emit event on follow
+    io.emit("follow", { userId: req.params.id, followerId: req.user._id });
   });
 
   router.post("/unfollow/:id", isAuth, (req, res) => {

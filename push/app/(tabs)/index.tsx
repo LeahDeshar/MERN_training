@@ -23,7 +23,7 @@ export default function HomeScreen() {
           marginBottom: 20,
         }}
       >
-        AIRBNB MAPS
+        AIRBNB MAPS TEST
       </Text>
       <Button
         title="PUSH NOTIFICATION"

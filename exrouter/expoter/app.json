@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "front",
-    "slug": "front",
+    "name": "expoter",
+    "slug": "expoter",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,8 +19,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.leahexpo1234.front"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -32,12 +31,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e9230547-6556-41e7-a64d-95d044a6e567"
-      }
-    },
-    "owner": "leahexpo1234"
+    }
   }
 }

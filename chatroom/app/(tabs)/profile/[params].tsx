@@ -5,8 +5,11 @@ import {
   TextInput,
   Button,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import io from "socket.io-client";
 
@@ -23,26 +26,21 @@ const ProfileDetails = () => {
   const [conversationId, setConversationId] = useState(null);
   const userId = currUser.user._id;
 
+  const scrollViewRef = useRef(); // For auto-scrolling
+
   useEffect(() => {
-    // Join the conversation
     socket.emit("join", userId, OtherUser._id);
 
-    // Listen for the conversation ID
     socket.on("conversationId", (id) => {
       setConversationId(id);
-      // Fetch all messages when the conversation is set
       socket.emit("allMessageOfUser", { conversationId: id });
     });
 
-    // Listen for incoming messages
     socket.on("receiveMessages", ({ conversationId, messages }) => {
       console.log(`Messages for conversation ${conversationId}:`, messages);
-
-      // [{"__v": 0, "_id": "6723bfd280100f8c32a8cef7", "conversationId": "67238fe7c7f730b81ce823ea", "senderId": "672374d29ea238cadf7560f7", "text": "Star", "timestamp": "2024-10-31T17:35:14.852Z"}]
       setMessages((prevMessages) => [...prevMessages, ...messages]);
     });
 
-    // Clean up the socket listeners on component unmount
     return () => {
       socket.off("receiveMessages");
       socket.off("conversationId");
@@ -51,80 +49,143 @@ const ProfileDetails = () => {
 
   const sendMessage = () => {
     if (text.trim()) {
-      // Create a new message object to append immediately
       const newMessage = {
-        senderId: { _id: userId, username: currUser.user.username }, // Include username for display
+        senderId: { _id: userId, username: currUser.user.username },
         text,
       };
 
-      // Update the messages state immediately for the sender
       setMessages((prevMessages) => [...prevMessages, newMessage]);
 
-      // Emit the message to the server
       socket.emit("sendMessage", {
         conversationId,
         senderId: userId,
         text,
       });
 
-      // Clear the input field
       setText("");
     }
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={90}
     >
-      <View style={{ marginTop: 20 }}>
-        <Text>CHAT group id {conversationId}</Text>
-        <View style={{ padding: 20, backgroundColor: "white" }}>
-          <ScrollView
-            contentContainerStyle={{ backgroundColor: "red" }}
-            inverted // To show the latest messages at the bottom
-          >
-            {messages.map((message, index) => {
-              const isCurrentUser = message.senderId._id === userId;
-              return (
-                <View
-                  key={index}
-                  style={{
-                    alignSelf: isCurrentUser ? "flex-end" : "flex-start",
-                    backgroundColor: isCurrentUser ? "lightblue" : "lightgray",
-                    borderRadius: 10,
-                    marginVertical: 5,
-                    padding: 10,
-                    maxWidth: "80%",
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold" }}>
-                    {isCurrentUser
-                      ? currUser.user.username
-                      : OtherUser.username}
-                  </Text>
-                  <Text>{message.text}</Text>
-                </View>
-              );
-            })}
-          </ScrollView>
+      <View style={styles.chatContainer}>
+        <Text style={styles.chatHeader}>Chat with {OtherUser.username}</Text>
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current?.scrollToEnd({ animated: true })
+          }
+          contentContainerStyle={styles.messagesContainer}
+        >
+          {messages.map((message, index) => {
+            const isCurrentUser = message.senderId._id === userId;
+            return (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  isCurrentUser
+                    ? styles.currentUserBubble
+                    : styles.otherUserBubble,
+                ]}
+              >
+                <Text style={styles.senderName}>
+                  {isCurrentUser ? currUser.user.username : OtherUser.username}
+                </Text>
+                <Text style={styles.messageText}>{message.text}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            borderTopWidth: 1,
+            borderColor: "#d3d3d3",
+            padding: 10,
+            backgroundColor: "white",
+          }}
+        >
           <TextInput
             value={text}
             onChangeText={setText}
             placeholder="Type your message"
-            style={{ borderWidth: 1, padding: 10, marginVertical: 10 }}
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: "#d3d3d3",
+              borderRadius: 20,
+              paddingHorizontal: 15,
+              marginRight: 10,
+              height: 40,
+            }}
           />
-          <Button title="Send" onPress={sendMessage} />
+          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+            <Text style={styles.sendButtonText}>Send</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default ProfileDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  chatContainer: {
+    flex: 1,
+    padding: 10,
+  },
+  chatHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  messagesContainer: {
+    flexGrow: 1,
+    paddingVertical: 10,
+  },
+  messageBubble: {
+    borderRadius: 15,
+    padding: 10,
+    marginVertical: 5,
+    maxWidth: "80%",
+  },
+  currentUserBubble: {
+    backgroundColor: "#daf8e3",
+    alignSelf: "flex-end",
+  },
+  otherUserBubble: {
+    backgroundColor: "#e3e3e3",
+    alignSelf: "flex-start",
+  },
+  senderName: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  inputContainer: {},
+  input: {},
+  sendButton: {
+    backgroundColor: "#4CAF50",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  sendButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+});

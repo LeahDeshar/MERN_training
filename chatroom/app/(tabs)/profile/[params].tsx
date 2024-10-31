@@ -1,17 +1,18 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import io from "socket.io-client";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import EmojiKeyboard from "rn-emoji-keyboard"; // Import emoji keyboard
 
 const SOCKET_SERVER_URL = "http://192.168.1.6:8080";
 const socket = io(SOCKET_SERVER_URL);
@@ -23,10 +24,11 @@ const ProfileDetails = () => {
 
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
+  const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false); // State for showing the emoji keyboard
   const [conversationId, setConversationId] = useState(null);
   const userId = currUser.user._id;
 
-  const scrollViewRef = useRef(); // For auto-scrolling
+  const scrollViewRef = useRef();
 
   useEffect(() => {
     socket.emit("join", userId, OtherUser._id);
@@ -37,7 +39,6 @@ const ProfileDetails = () => {
     });
 
     socket.on("receiveMessages", ({ conversationId, messages }) => {
-      console.log(`Messages for conversation ${conversationId}:`, messages);
       setMessages((prevMessages) => [...prevMessages, ...messages]);
     });
 
@@ -47,11 +48,12 @@ const ProfileDetails = () => {
     };
   }, [userId, OtherUser._id]);
 
-  const sendMessage = () => {
-    if (text.trim()) {
+  const sendMessage = (isLike = false) => {
+    const messageText = isLike ? "👍" : text.trim();
+    if (messageText) {
       const newMessage = {
         senderId: { _id: userId, username: currUser.user.username },
-        text,
+        text: messageText,
       };
 
       setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -59,11 +61,16 @@ const ProfileDetails = () => {
       socket.emit("sendMessage", {
         conversationId,
         senderId: userId,
-        text,
+        text: messageText,
       });
 
-      setText("");
+      if (!isLike) setText("");
     }
+  };
+
+  // Function to add selected emoji to the text input
+  const addEmoji = (emoji) => {
+    setText((prevText) => prevText + emoji.emoji);
   };
 
   return (
@@ -101,32 +108,51 @@ const ProfileDetails = () => {
             );
           })}
         </ScrollView>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            borderTopWidth: 1,
-            borderColor: "#d3d3d3",
-            padding: 10,
-            backgroundColor: "white",
-          }}
-        >
+
+        <View style={styles.inputContainer}>
+          {showEmojiKeyboard && (
+            <EmojiKeyboard
+              onEmojiSelected={addEmoji}
+              open={showEmojiKeyboard}
+              enableRecentlyUsed
+              enableSearchBar
+              enableCategoryChangeGesture
+              onClose={() => setShowEmojiKeyboard(false)}
+              theme={{
+                backdrop: "transparent",
+              }}
+              categoryOrder={[
+                "recently_used",
+                "smileys_emotion",
+                "people_body",
+                "animals_nature",
+                "food_drink",
+                "travel_places",
+                "activities",
+                "objects",
+                "symbols",
+                "flags",
+                "search",
+              ]}
+            />
+          )}
+          <TouchableOpacity
+            onPress={() => setShowEmojiKeyboard(!showEmojiKeyboard)}
+          >
+            <AntDesign name="smileo" size={28} color="#4CAF50" />
+          </TouchableOpacity>
           <TextInput
             value={text}
             onChangeText={setText}
             placeholder="Type your message"
-            style={{
-              flex: 1,
-              borderWidth: 1,
-              borderColor: "#d3d3d3",
-              borderRadius: 20,
-              paddingHorizontal: 15,
-              marginRight: 10,
-              height: 40,
-            }}
+            style={styles.input}
           />
-          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-            <Text style={styles.sendButtonText}>Send</Text>
+          <TouchableOpacity onPress={() => sendMessage(text ? false : true)}>
+            {text ? (
+              <FontAwesome name="send" size={28} color="#4CAF50" />
+            ) : (
+              <AntDesign name="like1" size={28} color="#4CAF50" />
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -176,16 +202,26 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 16,
   },
-  inputContainer: {},
-  input: {},
-  sendButton: {
-    backgroundColor: "#4CAF50",
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderTopWidth: 1,
+    borderColor: "#d3d3d3",
+    backgroundColor: "white",
   },
-  sendButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#d3d3d3",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    marginRight: 10,
+    height: 40,
+  },
+  emojiKeyboard: {
+    position: "absolute",
+    bottom: 50,
+    width: "100%",
   },
 });

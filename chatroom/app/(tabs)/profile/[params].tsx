@@ -37,6 +37,8 @@ const ProfileDetails = () => {
     // Listen for incoming messages
     socket.on("receiveMessages", ({ conversationId, messages }) => {
       console.log(`Messages for conversation ${conversationId}:`, messages);
+
+      // [{"__v": 0, "_id": "6723bfd280100f8c32a8cef7", "conversationId": "67238fe7c7f730b81ce823ea", "senderId": "672374d29ea238cadf7560f7", "text": "Star", "timestamp": "2024-10-31T17:35:14.852Z"}]
       setMessages((prevMessages) => [...prevMessages, ...messages]);
     });
 
@@ -101,7 +103,9 @@ const ProfileDetails = () => {
                   }}
                 >
                   <Text style={{ fontWeight: "bold" }}>
-                    {message.senderId.username}
+                    {isCurrentUser
+                      ? currUser.user.username
+                      : OtherUser.username}
                   </Text>
                   <Text>{message.text}</Text>
                 </View>

@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
@@ -48,6 +49,14 @@ export default function HomeScreen() {
         //   params: { userId: data._id },
         // });
         // navigation.navigate("Chat", { user: data });
+
+        navigation.navigate({
+          pathname: "/profile",
+          params: {
+            user: JSON.stringify(result),
+            allUsers: JSON.stringify(users),
+          },
+        });
       } else {
         setError(data.message || "Login failed");
       }
@@ -104,12 +113,19 @@ export default function HomeScreen() {
 
       {/* pass the user response to /chat/ */}
 
-      <Link
-        // href={`/profile?data=${encodeURIComponent(JSON.stringify(result))}`}
-        href={`/profile/${result}`}
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate({
+            pathname: "/profile",
+            params: {
+              user: JSON.stringify(result),
+              allUsers: JSON.stringify(users),
+            },
+          });
+        }}
       >
         <Text style={{}}>Go to Profile Details</Text>
-      </Link>
+      </TouchableOpacity>
 
       {users && (
         <View>

@@ -14,9 +14,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import LoginScreen from "../LoginScreen";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "@/hooks/AppProvider";
 const SOCKET_SERVER_URL = "http://192.168.1.6:8080";
 export default function HomeScreen() {
+  // const { theme, setTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,6 +26,8 @@ export default function HomeScreen() {
   const [result, setResult] = useState(null);
 
   const navigation = useRouter();
+
+  // const { data } = useContext(AppContext);
 
   const handleLogin = async () => {
     try {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,8 @@ import {
 import { useLocalSearchParams } from "expo-router";
 import { io } from "socket.io-client";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import EmojiKeyboard from "rn-emoji-keyboard"; // Import emoji keyboard
+import EmojiKeyboard from "rn-emoji-keyboard";
+import { AppContext } from "@/hooks/AppProvider";
 
 const SOCKET_SERVER_URL = "http://192.168.1.6:8080";
 const socket = io(SOCKET_SERVER_URL);
@@ -32,17 +33,19 @@ const ProfileDetails = () => {
   const scrollViewRef = useRef();
   const otherId = OtherUser._id;
 
+  const { unreadCounts, setUnreadCounts } = useContext(AppContext);
+
   useEffect(() => {
     socket.emit("join", userId, otherId);
 
     socket.on("conversationId", (id) => {
-      console.log("conversationId", id);
       setConversationId(id);
       socket.emit("allMessageOfUser", { conversationId: id });
     });
 
     socket.on("receiveMessages", ({ conversationId, messages }) => {
       console.log("receiveMessages", messages, conversationId);
+
       setMessages((prevMessages) => [...prevMessages, ...messages]);
     });
 
@@ -59,7 +62,10 @@ const ProfileDetails = () => {
         senderId: { _id: userId, username: currUser.user.username },
         text: messageText,
       };
-
+      // setUnreadCounts((prevCounts) => ({
+      //   ...prevCounts,
+      //   [otherId]: (prevCounts[otherId] || 0) + 1,
+      // }));
       setMessages((prevMessages) => [...prevMessages, newMessage]);
 
       socket.emit("sendMessage", {
@@ -84,7 +90,7 @@ const ProfileDetails = () => {
     >
       <View style={styles.chatContainer}>
         <Text style={styles.chatHeader}>
-          Chat with {OtherUser.username} {conversationId}
+          Im {currUser?.user?.username} Chatting with {OtherUser.username}
         </Text>
 
         <ScrollView

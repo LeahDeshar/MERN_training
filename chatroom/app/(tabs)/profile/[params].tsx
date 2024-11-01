@@ -8,9 +8,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import EmojiKeyboard from "rn-emoji-keyboard"; // Import emoji keyboard
 
@@ -24,21 +25,24 @@ const ProfileDetails = () => {
 
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-  const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false); // State for showing the emoji keyboard
+  const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
   const [conversationId, setConversationId] = useState(null);
   const userId = currUser.user._id;
 
   const scrollViewRef = useRef();
+  const otherId = OtherUser._id;
 
   useEffect(() => {
-    socket.emit("join", userId, OtherUser._id);
+    socket.emit("join", userId, otherId);
 
     socket.on("conversationId", (id) => {
+      console.log("conversationId", id);
       setConversationId(id);
       socket.emit("allMessageOfUser", { conversationId: id });
     });
 
     socket.on("receiveMessages", ({ conversationId, messages }) => {
+      console.log("receiveMessages", messages, conversationId);
       setMessages((prevMessages) => [...prevMessages, ...messages]);
     });
 
@@ -46,7 +50,7 @@ const ProfileDetails = () => {
       socket.off("receiveMessages");
       socket.off("conversationId");
     };
-  }, [userId, OtherUser._id]);
+  }, [userId, otherId]);
 
   const sendMessage = (isLike = false) => {
     const messageText = isLike ? "👍" : text.trim();
@@ -68,7 +72,6 @@ const ProfileDetails = () => {
     }
   };
 
-  // Function to add selected emoji to the text input
   const addEmoji = (emoji) => {
     setText((prevText) => prevText + emoji.emoji);
   };
@@ -80,7 +83,10 @@ const ProfileDetails = () => {
       keyboardVerticalOffset={90}
     >
       <View style={styles.chatContainer}>
-        <Text style={styles.chatHeader}>Chat with {OtherUser.username}</Text>
+        <Text style={styles.chatHeader}>
+          Chat with {OtherUser.username} {conversationId}
+        </Text>
+
         <ScrollView
           ref={scrollViewRef}
           onContentSizeChange={() =>

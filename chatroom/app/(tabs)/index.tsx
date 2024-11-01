@@ -27,34 +27,38 @@ export default function HomeScreen() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(
-        "http://192.168.1.6:8080/api/v1/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${SOCKET_SERVER_URL}/api/v1/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Assuming the server returns userId and token
         console.log(data);
         setResult(data);
-        // navigation.navigate("/chat", { user: data.user });
-        // navigation.navigate("/profile/[params]", {
-        //   params: { userId: data._id },
-        // });
-        // navigation.navigate("Chat", { user: data });
+
+        const allUser = await fetch(
+          `${SOCKET_SERVER_URL}/api/v1/user/get-all-users`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${data?.token}`,
+            },
+          }
+        );
+
+        const allUserData = await allUser.json();
 
         navigation.navigate({
           pathname: "/profile",
           params: {
-            user: JSON.stringify(result),
-            allUsers: JSON.stringify(users),
+            user: JSON.stringify(data),
+            allUsers: JSON.stringify(allUserData),
           },
         });
       } else {
@@ -71,7 +75,7 @@ export default function HomeScreen() {
       try {
         // fetch and also send the token
         const response = await fetch(
-          "http://192.168.1.6:8080/api/v1/user/get-all-users",
+          `${SOCKET_SERVER_URL}/api/v1/user/get-all-users`,
           {
             method: "GET",
             headers: {
@@ -80,9 +84,6 @@ export default function HomeScreen() {
             },
           }
         );
-        // const response = await fetch(
-        //   "http://192.168.1.6:8080/user/get-all-users"
-        // );
 
         const data = await response.json();
         console.log("Fetched users", data);
@@ -101,7 +102,6 @@ export default function HomeScreen() {
         backgroundColor: "#fff",
       }}
     >
-      <Text>Hello</Text>
       <LoginScreen
         email={email}
         setEmail={setEmail}
@@ -110,8 +110,6 @@ export default function HomeScreen() {
         error={error}
         handleLogin={handleLogin}
       />
-
-      {/* pass the user response to /chat/ */}
 
       <TouchableOpacity
         onPress={() => {
@@ -123,32 +121,7 @@ export default function HomeScreen() {
             },
           });
         }}
-      >
-        <Text style={{}}>Go to Profile Details</Text>
-      </TouchableOpacity>
-
-      {users && (
-        <View>
-          <Text>Users</Text>
-          {users.map((peps) => (
-            <Pressable
-              key={peps._id}
-              onPress={() => {
-                navigation.navigate({
-                  pathname: "/profile/[params]",
-                  params: {
-                    user: JSON.stringify(result),
-                    otherUser: JSON.stringify(peps),
-                  },
-                });
-              }}
-            >
-              <Text>{peps.email}</Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
-      {!users && <Text>Loading...</Text>}
+      ></TouchableOpacity>
     </View>
   );
 }

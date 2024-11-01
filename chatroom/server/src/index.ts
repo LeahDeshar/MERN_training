@@ -20,7 +20,6 @@ dotenv.config();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -59,12 +58,9 @@ interface IConversation extends Document {
   createdAt?: Date;
 }
 
-// for IC
-
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  console.log(`User connected:..... ${socket.id}`);
 
-  // Join user's personal room based on their ID
   socket.on("join", async (userId: string, otherId: string) => {
     socket.join(userId);
     console.log(`User ${userId} and ${otherId} joined their room`);
@@ -73,7 +69,6 @@ io.on("connection", (socket) => {
       participants: { $all: [userId, otherId] },
     });
 
-    // If no conversation exists, create a new one
     if (!conversation) {
       conversation = await Conversation.create({
         participants: [userId, otherId],
@@ -86,38 +81,7 @@ io.on("connection", (socket) => {
     }
 
     socket.emit("conversationId", conversation._id);
-
-    socket.on("allMessageOfUser", async ({ conversationId }) => {
-      try {
-        // Fetch all messages for the given conversation ID
-        const messages = await Message.find({ conversationId }).populate(
-          "senderId",
-          "username profilePic"
-        );
-
-        // Emit the messages back to the client
-        socket.emit("receiveMessages", { conversationId, messages });
-      } catch (error) {
-        console.error("Error retrieving messages:", error);
-        socket.emit("error", { message: "Failed to retrieve messages." });
-      }
-    });
   });
-
-  // socket.on("sendMessage", async ({ conversationId, senderId, text }) => {
-  //   const filteredGroup = (await Conversation.findOne({
-  //     _id: conversationId,
-  //   })) as IConversation;
-  //   if (filteredGroup) {
-  //     const newMessage = new Message({ conversationId, senderId, text });
-  //     await newMessage.save();
-
-  //     filteredGroup.messages.push(newMessage._id);
-  //     await filteredGroup.save();
-  //   } else {
-  //     console.error(`Group with ID ${conversationId} not found`);
-  //   }
-  // });
 
   socket.on("sendMessage", async ({ conversationId, senderId, text }) => {
     const filteredGroup = await Conversation.findOne({

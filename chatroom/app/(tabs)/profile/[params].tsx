@@ -16,7 +16,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import EmojiKeyboard from "rn-emoji-keyboard";
 import { AppContext } from "@/hooks/AppProvider";
 
-const SOCKET_SERVER_URL = "http://192.168.1.6:8080";
+const SOCKET_SERVER_URL = "http://192.168.1.8:8080";
 const socket = io(SOCKET_SERVER_URL);
 
 const ProfileDetails = () => {

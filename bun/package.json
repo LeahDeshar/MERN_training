@@ -1,0 +1,19 @@
+{
+  "name": "bun",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "start:dev": "nodemon index.ts"
+  },
+  "type": "module",
+  "dependencies": {
+    "fastify": "^5.1.0",
+    "nodemon": "^3.1.7"
+  }
+}

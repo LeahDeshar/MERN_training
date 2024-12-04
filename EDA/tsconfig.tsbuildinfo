@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/config/logger.ts","./src/config/redis.ts","./src/consumer/emailservices.ts","./src/controller/user.ts","./src/db/db.ts","./src/middleware/authmiddleware.ts","./src/middleware/multer.ts","./src/middleware/ratelimit.ts","./src/model/user.ts","./src/routes/user.ts","./src/utils/features.ts"],"version":"5.6.3"}

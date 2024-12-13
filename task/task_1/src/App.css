@@ -3,6 +3,9 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #02063f;
+  margin-block: 5rem;
+  border-radius: 25px;
 }
 
 .logo {
@@ -48,6 +51,7 @@ button {
 }
 li {
   list-style-type: none;
+  /* border: 1px solid blue; */
 }
 
 .horizontal-ul {
@@ -56,11 +60,21 @@ li {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+.horizontal-ul li {
   padding-inline: 10px;
 }
 .horizontal-ul li:hover {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
+  background-color: rgb(255, 234, 0);
   cursor: pointer;
+  color: #000;
+  border-radius: 25px;
+  padding-inline: 10px;
+}
+.active-category {
+  background-color: rgb(255, 234, 0);
+  color: #000;
   border-radius: 25px;
   padding-inline: 10px;
 }

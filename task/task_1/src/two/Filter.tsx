@@ -43,8 +43,24 @@ function Filter() {
   };
   const filteredCategoryData = useMemo(() => {
     if (!selectedCategory || !data) return data;
-    return data.filter((item) => item.category === selectedCategory);
-  }, [selectedCategory, data]);
+
+    let filtered = data;
+
+    if (selectedCategory) {
+      filtered = filtered.filter((item) => item.category === selectedCategory);
+    }
+
+    if (selectedPriceRange) {
+      const [min, max] = selectedPriceRange.split("-").map(Number);
+      filtered = filtered.filter(
+        (item) => item.price >= min && item.price <= max
+      );
+    }
+
+    return filtered;
+
+    // return data.filter((item) => item.category === selectedCategory);
+  }, [selectedCategory, data, selectedPriceRange]);
 
   if (!data) return <div>Loading...</div>;
 
@@ -66,7 +82,9 @@ function Filter() {
         </ul>
 
         <div>
-          <label htmlFor="priceRange">Select Price Range: </label>
+          <label htmlFor="priceRange" className="mx-1">
+            Select Price Range:
+          </label>
           <select id="priceRange" onChange={handlePriceRangeChange}>
             <option value="">All</option>
             <option value="0-50">0 - 50</option>
@@ -82,8 +100,10 @@ function Filter() {
           <li key={item.product_id}>
             <div className="container">
               <p>{item.product_name}</p>
-              <p>{item.price}</p>
+              <p>{item.price}$</p>
+              <p className="bg-rounded">{item.brand}</p>
             </div>
+            <p>{item.description}</p>
           </li>
         ))}
       </ul>

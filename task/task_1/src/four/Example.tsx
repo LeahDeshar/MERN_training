@@ -1,4 +1,3 @@
-import React from "react";
 import useWindowWidth from "../hooks/useWindowWidth";
 import useCounter from "../hooks/useCounter";
 import { ToastContainer } from "react-toastify";

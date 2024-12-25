@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import "./App.css";
-import Example from "./four/Example";
+import Example from "./five/Example";
 // const Home = React.lazy(() => import("./three/Home"));
 const Home = React.lazy(
   () =>
@@ -10,8 +10,8 @@ const Home = React.lazy(
       }, 2000);
     })
 );
-const About = React.lazy(() => import("./three/About"));
-const Contact = React.lazy(() => import("./three/Contact"));
+// const About = React.lazy(() => import("./three/About"));
+// const Contact = React.lazy(() => import("./three/Contact"));
 function App() {
   return (
     <div>

@@ -3,11 +3,14 @@ import useCounter from "../hooks/useCounter";
 import { ToastContainer } from "react-toastify";
 import useToggle from "../hooks/useToggle";
 import useTimer from "../hooks/useTimer";
+import useCalculator from "../hooks/useCalculator";
 function Example() {
   const width = useWindowWidth();
+  const { add, subtract } = useCalculator(10, 20);
   const { counter, increment, decrement, reset } = useCounter();
   const { toggleState, handleToggle } = useToggle();
   const { time, isRunning, startTimer, stopTimer, pauseTimer } = useTimer();
+
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <ToastContainer />
@@ -33,6 +36,10 @@ function Example() {
           Pause
         </button>
         <button onClick={stopTimer}>Stop</button>
+      </div>
+
+      <div>
+        <h1>useCalculator Example</h1>
       </div>
     </div>
   );

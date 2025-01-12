@@ -1,7 +1,7 @@
 <div class="register-form-container">
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <h2>Register</h2>
-    <label class="input input-bordered flex items-center gap-2" for="name">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>Login</h2>
+    <label class="input input-bordered flex items-center gap-2" for="username">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
@@ -13,8 +13,8 @@
         />
       </svg>
       <input
-        id="name"
-        formControlName="name"
+        id="username"
+        formControlName="username"
         placeholder="Enter your name"
         type="text"
         class="grow"
@@ -22,14 +22,15 @@
     </label>
     <div
       *ngIf="
-        registerForm.controls.name.invalid && registerForm.controls.name.touched
+        loginForm.controls.username.invalid &&
+        loginForm.controls.username.touched
       "
     >
-      <small *ngIf="registerForm.controls.name.errors?.['required']"
+      <small *ngIf="loginForm.controls.username.errors?.['required']"
         >Name is required.</small
       >
     </div>
-    <label class="input input-bordered flex items-center gap-2" for="email">
+    <!-- <label class="input input-bordered flex items-center gap-2" for="email">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
@@ -53,17 +54,16 @@
     </label>
     <div
       *ngIf="
-        registerForm.controls.email.invalid &&
-        registerForm.controls.email.touched
+        loginForm.controls.email.invalid && loginForm.controls.email.touched
       "
     >
-      <small *ngIf="registerForm.controls.email.errors?.['required']"
+      <small *ngIf="loginForm.controls.email.errors?.['required']"
         >Email is required.</small
       >
-      <small *ngIf="registerForm.controls.email.errors?.['email']"
+      <small *ngIf="loginForm.controls.email.errors?.['email']"
         >Invalid email format.</small
       >
-    </div>
+    </div> -->
 
     <label class="input input-bordered flex items-center gap-2" for="password">
       <svg
@@ -89,17 +89,22 @@
     </label>
     <div
       *ngIf="
-        registerForm.controls.password.invalid &&
-        registerForm.controls.password.touched
+        loginForm.controls.password.invalid &&
+        loginForm.controls.password.touched
       "
     >
-      <small *ngIf="registerForm.controls.password.errors?.['required']"
+      <small *ngIf="loginForm.controls.password.errors?.['required']"
         >Password is required.</small
       >
-      <small *ngIf="registerForm.controls.password.errors?.['minlength']">
+      <small *ngIf="loginForm.controls.password.errors?.['minlength']">
         Password must be at least 6 characters.
       </small>
     </div>
-    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+    <div class="text-center flex fle-row justify-center mt-3">
+      <p class="mr-1">Don't have an account?</p>
+      <a routerLink="/register"> Register now</a>
+    </div>
   </form>
 </div>

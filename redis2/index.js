@@ -1,20 +1,20 @@
 const express = require("express");
 const Redis = require("ioredis");
+require("dotenv").config();
 
 const app = express();
 const port = 3000;
 
-// Connect to Redis
 const redis = new Redis({
-  host: "redis-10452.c246.us-east-1-4.ec2.redns.redis-cloud.com",
-  port: 10452,
-  password: "2TSsvRiFYSK27r9LnxRTfkw0FL25IqGh",
-}); // By default, it connects to localhost:6379
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
+});
 
-// Middleware to parse JSON
 app.use(express.json());
 
 // Route to set a key-value pair in Redis
+// http:localhost:3000/set
 app.post("/set", async (req, res) => {
   const { key, value } = req.body;
   try {
@@ -26,6 +26,7 @@ app.post("/set", async (req, res) => {
 });
 
 // Route to get a value from Redis
+// http:localhost:3000/get/:key
 app.get("/get/:key", async (req, res) => {
   const { key } = req.params;
   try {
@@ -41,6 +42,8 @@ app.get("/get/:key", async (req, res) => {
 });
 
 // Route to delete a key-value pair from Redis
+// http:localhost:3000/delete/:key
+
 app.delete("/delete/:key", async (req, res) => {
   const { key } = req.params;
   try {

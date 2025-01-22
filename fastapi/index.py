@@ -1,6 +1,9 @@
 from fastapi import FastAPI,APIRouter,Request,HTTPException,status, Depends
 from pydantic import BaseModel,EmailStr
 from sqlalchemy.orm import Session
+from db.database import get_db
+from db.models import User
+
 app = FastAPI()
 router = APIRouter()
 
@@ -24,49 +27,63 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     password: str
 
-@app.post("/register")
-async def register_user(user: RegisterRequest, db: Session = Depends(get_db)):
+# @app.post("/register")
+# async def register_user(user: RegisterRequest, db: Session = Depends(get_db)):
+#     try:
+#         username = user.username
+#         email = user.email
+#         password = user.password
+
+#         find_email = db.query(User).filter(User.email == email).first()
+#         if find_email:
+#             raise HTTPException(
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 detail="Email already exists"
+#             )
+
+#         new_user = User(username=username, email=email, password=password)
+#         db.add(new_user)
+#         db.commit()
+#         db.refresh(new_user)
+
+#         return {
+#             "msg": "User created successfully",
+#             "success": True,
+#             "user": {
+#                 "id": new_user.id,
+#                 "username": new_user.username,
+#                 "email": new_user.email,
+#             }
+#         }
+
+#     except HTTPException as e:
+#         raise e  
+#     except Exception as e:
+#         print(f"Error: {e}")
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="Internal Server Error"
+#         )
+
+
+@router.post("/register")
+async def register(user:RegisterRequest):
     try:
         username = user.username
         email = user.email
         password = user.password
-
-        find_email = db.query(Users).filter(Users.email == email).first()
-        if find_email:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email already exists"
-            )
-
-        # Create a new user
-        new_user = Users(username=username, email=email, password=password)
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-
-        return {
-            "msg": "User created successfully",
-            "success": True,
-            "user": {
-                "id": new_user.id,
-                "username": new_user.username,
-                "email": new_user.email,
-            }
-        }
-
-    except HTTPException as e:
-        raise e  # Re-raise known HTTP exceptions
+        print(username)
+        print(email)
+        print(password)
+        
+        return {"message": "You've registered the user",
+            "data": user}
     except Exception as e:
-        # Log the error and return a generic error message
         print(f"Error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal Server Error"
         )
-
-
-
-
 
 
 

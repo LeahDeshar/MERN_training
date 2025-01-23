@@ -1,11 +1,17 @@
-from fastapi import FastAPI,APIRouter,Request,HTTPException,status, Depends
-from pydantic import BaseModel,EmailStr
+from fastapi import FastAPI, APIRouter, Request, HTTPException, status, Depends
+from pydantic import BaseModel, EmailStr
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from db.database import get_db
-from db.models import User
+from passlib.context import CryptContext
+
+import models, schemas
+from database import engine, Base, get_db
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 router = APIRouter()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class User(BaseModel):
@@ -13,7 +19,8 @@ class User(BaseModel):
     name: str
     email: str
     is_active: bool = True
-
+    
+# loggin middleware
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     print(f"Request: Method -> {request.method} URL -> {request.url} -----------")
@@ -21,70 +28,44 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
 
-class RegisterRequest(BaseModel):
-    username: str
-    email: EmailStr
-    password: str
+@router.post("/register", response_model=schemas.UserResponse)
+def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    if db.query(models.User).filter(models.User.username == user.username).first():
+        raise HTTPException(status_code=400, detail="Username already taken")
+    if db.query(models.User).filter(models.User.email == user.email).first():
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    hashed_password = hash_password(user.password)
+    db_user = models.User(username=user.username, email=user.email, password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    
+    return db_user
 
-# @app.post("/register")
-# async def register_user(user: RegisterRequest, db: Session = Depends(get_db)):
-#     try:
-#         username = user.username
-#         email = user.email
-#         password = user.password
-
-#         find_email = db.query(User).filter(User.email == email).first()
-#         if find_email:
-#             raise HTTPException(
-#                 status_code=status.HTTP_400_BAD_REQUEST,
-#                 detail="Email already exists"
-#             )
-
-#         new_user = User(username=username, email=email, password=password)
-#         db.add(new_user)
-#         db.commit()
-#         db.refresh(new_user)
-
-#         return {
-#             "msg": "User created successfully",
-#             "success": True,
-#             "user": {
-#                 "id": new_user.id,
-#                 "username": new_user.username,
-#                 "email": new_user.email,
-#             }
-#         }
-
-#     except HTTPException as e:
-#         raise e  
-#     except Exception as e:
-#         print(f"Error: {e}")
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail="Internal Server Error"
-#         )
-
-
-@router.post("/register")
-async def register(user:RegisterRequest):
-    try:
-        username = user.username
-        email = user.email
-        password = user.password
-        print(username)
-        print(email)
-        print(password)
-        
-        return {"message": "You've registered the user",
-            "data": user}
-    except Exception as e:
-        print(f"Error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal Server Error"
-        )
-
+@router.post("/login", response_model=schemas.UserResponse)
+def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
+    # login functionality with sqlite
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if not db_user:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    if not pwd_context.verify(user.password, db_user.password):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    # if db.query(models.User).filter(models.User.username == user.username).first():
+    #     raise HTTPException(status_code=400, detail="Username already taken")
+    # if db.query(models.User).filter(models.User.email == user.email).first():
+    #     raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # hashed_password = hash_password(user.password)
+    # db_user = models.User(username=user.username, email=user.email, password=hashed_password)
+    # db.add(db_user)
+    # db.commit()
+    # db.refresh(db_user)
+    
+    return db_user
 
 
 
@@ -93,27 +74,21 @@ async def register(user:RegisterRequest):
 def get_users():
     return {"users": ["Alice", "Bob"]}
 
-
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+ return {"Hello": "World"}
 
 @app.get("/item/{id}")
-def read_one(id:int):
+def read_one(id: int):
     return {"message": f"path parameter {id}"}
 
-
 @app.get("/item/")
-def read_query(skip:int,limit:int):
+def read_query(skip: int, limit: int):
     return {"message": f"query data skip:{skip} limit:{limit}"}
-
 
 @app.post("/create")
 def create_post(user: User):
     return {"message": "You've created the post",
             "data": user}
-    
-    
-    
-    
+
 app.include_router(router, prefix="/api/v1")

@@ -3,7 +3,10 @@ from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-
+from fastapi.responses import JSONResponse
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordBearer
 import models, schemas
 from database import engine, Base, get_db
 
@@ -12,7 +15,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+SECRET_KEY = "your_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class User(BaseModel):
     id: int
@@ -20,7 +26,7 @@ class User(BaseModel):
     email: str
     is_active: bool = True
     
-# loggin middleware
+# logging middleware
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     print(f"Request: Method -> {request.method} URL -> {request.url} -----------")
@@ -28,6 +34,33 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def verify_access_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    payload = verify_access_token(token)
+    user = db.query(models.User).filter(models.User.email == payload.get("sub")).first()
+    if user is None:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    return user    
+    
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -44,28 +77,20 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     
-    return db_user
+    return JSONResponse(content={"message": "User registered successfully", "user": db_user})
 
 @router.post("/login", response_model=schemas.UserResponse)
 def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
-    # login functionality with sqlite
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if not db_user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     if not pwd_context.verify(user.password, db_user.password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    # if db.query(models.User).filter(models.User.username == user.username).first():
-    #     raise HTTPException(status_code=400, detail="Username already taken")
-    # if db.query(models.User).filter(models.User.email == user.email).first():
-    #     raise HTTPException(status_code=400, detail="Email already registered")
+   
+   
     
-    # hashed_password = hash_password(user.password)
-    # db_user = models.User(username=user.username, email=user.email, password=hashed_password)
-    # db.add(db_user)
-    # db.commit()
-    # db.refresh(db_user)
-    
-    return db_user
+    access_token = create_access_token(data={"sub": db_user.email})
+    return JSONResponse(content={"access_token": access_token, "token_type": "bearer"})
 
 
 

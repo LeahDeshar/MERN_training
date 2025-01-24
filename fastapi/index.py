@@ -1,14 +1,14 @@
 from fastapi import FastAPI, APIRouter, Request, HTTPException, status, Depends
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi.responses import JSONResponse
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from fastapi.security import OAuth2PasswordBearer
-import models, schemas
 from database import engine, Base, get_db
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from jose import JWTError, jwt
+import models, schemas
 
 Base.metadata.create_all(bind=engine)
 
@@ -91,7 +91,6 @@ def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     
     access_token = create_access_token(data={"sub": db_user.email})
     return JSONResponse(content={"access_token": access_token, "token_type": "bearer"})
-
 
 
 

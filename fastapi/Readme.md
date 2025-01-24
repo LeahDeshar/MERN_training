@@ -14,7 +14,8 @@
 ### 2. User Management Module
 
 - [ ] **Manage User Profiles**: Update and retrieve user details.
-- [ ] **Delete User Accounts**.
+- [ ] **Delete User Accounts**
+- [ ] **Design the models (users and profile)** - [ ] **User Model**: username, email, password, role - [ ] **Profile Model**: - [ ] **(relationship)**
 
 ---
 

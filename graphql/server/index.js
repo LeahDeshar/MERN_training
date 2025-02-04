@@ -49,7 +49,7 @@ async function startApolloServer() {
     
     type Query {
       books: [Book]!
-      getUser: User!
+      getUser: [User]!
 
       book(id: ID!): Book
     }

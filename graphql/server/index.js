@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const Book = require("./models/Book");
 const mongoose = require("mongoose");
+const User = require("./models/Users");
 
 // start server
 
@@ -26,18 +27,35 @@ async function startApolloServer() {
       title: String!
       author: String!
     }
+
+    type User {
+      _id: ID!
+      username: String!
+      password: String!
+      email: String!
+    }
     
     input BookInput {
       title: String!
       author: String!
     }
+
+     input UserInput {
+      username: String!
+      password: String!
+      email: String!
+    }
+    
     
     type Query {
       books: [Book]!
+      getUser: User!
+
       book(id: ID!): Book
     }
     
     type Mutation {
+    createUser(input: UserInput!): User!
       createBook(input: BookInput!): Book!
       updateBook(id: ID!, input: BookInput!): Book!
       deleteBook(id: ID!): Book!
@@ -46,9 +64,11 @@ async function startApolloServer() {
     resolvers: {
       Query: {
         books: async () => await Book.find(),
+        getUser: async () => await User.find(),
         book: async (_, { id }) => await Book.findById(id),
       },
       Mutation: {
+        createUser: async (_, { input }) => await User.create(input),
         createBook: async (_, { input }) => await Book.create(input),
         updateBook: async (_, { id, input }) =>
           await Book.findByIdAndUpdate(id, input, { new: true }),

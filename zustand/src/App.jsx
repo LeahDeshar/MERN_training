@@ -1,12 +1,11 @@
 import "./App.css";
-import Column from "./components/Column";
+import Counter from "./components/Counter";
 
 function App() {
   return (
     <div className="App">
-      <Column state={"PLANNED"} />
-      <Column state={"ONGOING"} />
-      <Column state={"DONE"} />
+      <h1>Zustand</h1>
+      <Counter />
     </div>
   );
 }

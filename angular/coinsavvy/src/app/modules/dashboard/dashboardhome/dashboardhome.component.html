@@ -1,1 +1,33 @@
-<p>dashboardhome works!</p>
+<app-navbar/>
+<div class="dashboard-container p-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+    <!-- Balance Card -->
+    <div class="card bg-blue-500 text-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-lg font-bold">Total Balance</h2>
+      <p class="text-2xl font-semibold">$5,420.00</p>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card col-span-2 bg-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-lg font-bold">Recent Transactions</h2>
+      <ul>
+        <li *ngFor="let transaction of transactions" class="border-b py-2">
+          {{ transaction.description }} - <span class="font-semibold">${{ transaction.amount }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Expense Summary -->
+    <div class="card bg-green-500 text-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-lg font-bold">Expenses This Month</h2>
+      <p class="text-2xl font-semibold">$1,250.00</p>
+    </div>
+
+    <!-- Budget Progress -->
+    <div class="card col-span-2 bg-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-lg font-bold">Budget Utilization</h2>
+      <div class="w-full bg-gray-200 rounded-full h-4">
+        <div class="bg-red-500 h-4 rounded-full" [style.width]="budgetUsage + '%'" ></div>
+      </div>
+      <p class="text-sm mt-2">{{ budgetUsage }}% used of $2000 budget</p>
+    </div>
+  </div>

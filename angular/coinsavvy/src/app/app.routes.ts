@@ -1,21 +1,6 @@
-// import { Routes } from '@angular/router';
-// import { DashboardModule } from './modules/dashboard/dashboard.module';
-// import { ExpensesModule } from './modules/expenses/expenses.module';
-
-// export const routes: Routes = [
-//   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-//   {
-//     path: 'auth',
-//     loadChildren: () =>
-//       import('./modules/auth/auth.module').then((m) => m.AuthModule),
-//   },
-//   { path: 'dashboard', component: DashboardModule },
-//   { path: 'expense', component: ExpensesModule },
-
-//   { path: '**', redirectTo: '/dashboard' },
-// ];
-
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
+import { NoAuthGuard } from './core/guards/no-auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -23,6 +8,7 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
+    canActivate: [NoAuthGuard],
   },
   {
     path: 'dashboard',
@@ -30,13 +16,15 @@ export const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
+    canActivate: [AuthGuard],
   },
   {
-    path: 'expense',
+    path: 'expenses',
     loadChildren: () =>
       import('./modules/expenses/expenses.module').then(
         (m) => m.ExpensesModule
       ),
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '/dashboard' },
 ];

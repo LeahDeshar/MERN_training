@@ -17,6 +17,7 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "nodemailer": "^6.10.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "openai": "^4.85.4"
   }
 }

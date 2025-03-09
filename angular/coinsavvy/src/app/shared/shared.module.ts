@@ -17,6 +17,7 @@ import { CurrencyFormatPipe } from './pipes/currency-format.pipe';
 import { AuthService } from '../core/services/auth.service';
 import { AuthFormComponent } from './auth-form/auth-form.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AsidebarComponent } from './components/asidebar/asidebar.component';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     NavbarComponent,
     CurrencyFormatPipe,
     AuthFormComponent,
+    AsidebarComponent
   ],
   exports: [
     ButtonComponent,
@@ -34,6 +36,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     CurrencyFormatPipe,
     AuthFormComponent,
     NavbarComponent,
+    AsidebarComponent
+
   ],
 })
 export class SharedModule {}

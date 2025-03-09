@@ -38,3 +38,55 @@ coinsavvy/
 │── angular.json # Angular project configuration
 │── package.json # Dependencies
 │── tsconfig.json # TypeScript configuration
+
+Dashboard Features for CoinSavvy
+
+1. Navigation Bar (Top Bar)
+   Logo & Branding
+   Sidebar Toggle Button (for mobile)
+   User Profile Dropdown:
+   View Profile
+   Settings
+   Earnings
+   Sign Out
+2. Sidebar Navigation (Left Panel)
+   Dashboard (Overview)
+   Portfolio
+   Market Trends
+   Transactions
+   Budgeting & Goals
+   Insights & Reports
+   Alerts & Notifications
+   Settings
+
+3. Main Dashboard Panel
+   Portfolio Summary:
+
+Total Balance
+Asset Allocation (Crypto, Stocks, Other Investments)
+Performance Chart
+Market Trends:
+
+Top Gainers & Losers
+Trending Cryptos/Stocks
+Live Price Charts
+Recent Transactions:
+
+Deposits, Withdrawals, Trades
+Filters for Date & Type
+Budgeting & Goals:
+
+Monthly Saving Targets
+Spending Analysis
+Insights & Reports:
+
+AI-Based Predictions
+Historical Performance Analysis
+Alerts & Notifications:
+
+Price Alerts
+Important News Updates
+Quick Actions:
+
+Add Transaction
+Set Budget Goal

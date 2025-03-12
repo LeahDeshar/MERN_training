@@ -5,8 +5,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start rtl:justify-end">
         <button
-          data-drawer-target="logo-sidebar"
-          data-drawer-toggle="logo-sidebar"
+          (click)="toggleSidebar()"
           aria-controls="logo-sidebar"
           type="button"
           class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -34,79 +33,85 @@
           />
           <span
             class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"
-            >Flowbite</span
+            >CoinSavvy</span
           >
         </a>
       </div>
       <div class="flex items-center">
         <div class="flex items-center ms-3">
           <div>
-            <button
+            <a
               type="button"
               class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              aria-expanded="false"
-              data-dropdown-toggle="dropdown-user"
+              href="profile"
             >
-              <span class="sr-only">Open user menu</span>
               <img
                 class="w-8 h-8 rounded-full"
                 src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                 alt="user photo"
               />
-            </button>
+            </a>
           </div>
-          <div
-            class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600"
-            id="dropdown-user"
-          >
-            <div class="px-4 py-3" role="none">
-              <p class="text-sm text-gray-900 dark:text-white" role="none">
-                Neil Sims
-              </p>
-              <p
-                class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                role="none"
-              >
-                neil.simsflowbite.com
-              </p>
-            </div>
-            <ul class="py-1" role="none">
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                  role="menuitem"
-                  >Dashboard</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                  role="menuitem"
-                  >Settings</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                  role="menuitem"
-                  >Earnings</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                  role="menuitem"
-                  >Sign out</a
-                >
-              </li>
-            </ul>
+
+          <div class="actions">
+            <span class="currency" (click)="toggleCurrencySelector()">
+              Balance: {{ preferredCurrency }} ▼
+            </span>
+            <!-- <span class="currency">Balance: {{ preferredCurrency }}</span> -->
+
+            <button (click)="toggleNotificationsModal()">
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/appointment-reminders.png"
+                width="24"
+              />
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </nav>
+<div
+  *ngIf="isNotificationModalOpen"
+  class="modal-overlay"
+  (click)="closeModal($event)"
+>
+  <div class="modal">
+    <h2>Notifications</h2>
+    <ul>
+      <li *ngFor="let notification of notifications">
+        {{ notification.message }}
+      </li>
+    </ul>
+    <button (click)="toggleNotificationsModal()">Close</button>
+  </div>
+</div>
+<div
+  *ngIf="isCurrencySelectorOpen"
+  class="modal-overlay"
+  (click)="toggleCurrencySelector()"
+>
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Select Currency</h2>
+
+    <!-- Search Bar -->
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Search currency..."
+      class="search-bar"
+    />
+
+    <!-- Currency List -->
+    <ul>
+      <li
+        *ngFor="let currency of filteredCurrencies"
+        (click)="selectCurrency(currency)"
+      >
+        {{ currency }}
+      </li>
+    </ul>
+
+    <button (click)="toggleCurrencySelector()">Close</button>
+  </div>
+</div>

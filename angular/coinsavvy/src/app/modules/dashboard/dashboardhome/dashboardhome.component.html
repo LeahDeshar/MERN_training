@@ -13,27 +13,54 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       <div class="bg-white p-6 rounded-lg shadow-lg">
         <h3 class="text-lg font-semibold mb-2">Total Expenses</h3>
-        <p class="text-2xl font-bold text-red-600">$2,345</p>
+        <p class="text-2xl font-bold text-red-600">
+          {{ totalExpense | currency }}
+        </p>
       </div>
       <div class="bg-white p-6 rounded-lg shadow-lg">
         <h3 class="text-lg font-semibold mb-2">Total Income</h3>
-        <p class="text-2xl font-bold text-green-600">$5,000</p>
+        <p class="text-2xl font-bold text-green-600">
+          {{ totalIncome | currency }}
+        </p>
       </div>
       <div class="bg-white p-6 rounded-lg shadow-lg">
         <h3 class="text-lg font-semibold mb-2">Balance</h3>
-        <p class="text-2xl font-bold text-blue-600">$2,655</p>
+        <p class="text-2xl font-bold text-blue-600">
+          {{ totalBalance | currency }}
+        </p>
       </div>
     </div>
 
     <!-- Expense/Income Trend Chart -->
     <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
-      <h3 class="text-xl font-semibold mb-4">
-        Expenses vs Income (Last 30 Days)
-      </h3>
-      <!-- Here you can integrate a chart component like ng2-charts -->
-      <div class="h-64 bg-gray-100 rounded-lg">
+      <h3 class="text-xl font-semibold mb-4">Total Balance Trend</h3>
+      <div class="bg-gray-100 rounded-lg">
         <div style="display: block; height: 400px">
-          <div class="chart-container" #chartContainer></div>
+          <canvas #chartContainer class="max-w-full"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+      <h3 class="text-xl font-semibold mb-4">Income vs Expense Trend</h3>
+      <div class="bg-gray-100 rounded-lg">
+        <div style="display: block; height: 400px">
+          <canvas #barChartContainer class="max-w-full"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+      <h3 class="text-xl font-semibold mb-4">Expense Statistic</h3>
+      <div class="bg-gray-100 rounded-lg">
+        <div style="display: block; height: 400px">
+          <canvas #pieChartContainer class="max-w-full"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+      <h3 class="text-xl font-semibold mb-4">Balance Trends</h3>
+      <div class="bg-gray-100 rounded-lg">
+        <div style="display: block; height: 400px">
+          <canvas #balanceTrendsChartContainer class="max-w-full"></canvas>
         </div>
       </div>
     </div>

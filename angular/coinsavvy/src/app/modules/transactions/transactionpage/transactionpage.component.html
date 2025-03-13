@@ -1,1 +1,128 @@
-<p>transactionpage works!</p>
+<div class="bg-white shadow-md rounded-lg p-6">
+  <div class="flex justify-between items-center mb-5">
+    <h2 class="text-2xl font-bold text-gray-800">Transaction Activity</h2>
+    <button
+      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+    >
+      + Add Transaction
+    </button>
+  </div>
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+  >
+    <div>
+      <label
+        for="startDateTime"
+        class="block text-sm font-medium text-gray-700"
+      >
+        Start Date <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="datetime-local"
+        name="startDateTime"
+        class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+      />
+    </div>
+
+    <div>
+      <label for="endDateTime" class="block text-sm font-medium text-gray-700">
+        End Date <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="datetime-local"
+        name="endDateTime"
+        class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+      />
+    </div>
+
+    <div>
+      <label
+        for="transactionType"
+        class="block text-sm font-medium text-gray-700"
+      >
+        Transaction Type
+      </label>
+      <select
+        name="transactionType"
+        class="form-select mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+      >
+        <option value="">All</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="amountRange" class="block text-sm font-medium text-gray-700">
+        Amount Range ($)
+      </label>
+      <input
+        type="text"
+        name="amountRange"
+        placeholder="Min - Max"
+        class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+      />
+    </div>
+
+    <div>
+      <label for="category" class="block text-sm font-medium text-gray-700">
+        Category
+      </label>
+      <button
+        (click)="openModal()"
+        class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md w-full hover:bg-gray-300 transition"
+      >
+        Select Category
+      </button>
+    </div>
+
+    <div class="flex items-end">
+      <button
+        class="bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700 transition w-full"
+      >
+        Apply Filters
+      </button>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-[#0404048c] bg-opacity-50"
+  >
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg">
+      <div class="p-6">
+        <h3 class="text-lg font-semibold text-gray-900">Select Category</h3>
+
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="filterCategories()"
+          placeholder="Search categories..."
+          class="form-input mt-2 block w-full border-gray-300 rounded-md shadow-sm"
+        />
+
+        <ul
+          class="mt-4 max-h-60 overflow-y-auto border border-gray-200 rounded-md"
+        >
+          <li
+            *ngFor="let category of filteredCategories"
+            (click)="selectCategory(category)"
+            class="cursor-pointer p-2 hover:bg-gray-100"
+          >
+            {{ category }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-gray-100 p-4 flex justify-end">
+        <button
+          (click)="closeModal()"
+          class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

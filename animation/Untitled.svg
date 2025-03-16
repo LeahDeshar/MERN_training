@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" data-app="Xyris">
+    <defs>
+    </defs>
+    <polygon fill="#6B67FD" stroke="#000000" stroke-width="0" transform-origin="center" points="202.72079467773438,169 216.8115997314453,213.30812072753906 262.4103698730469,213.30812072753906 225.52020263671875,240.69207763671875 239.61099243164062,285.0002136230469 202.72079467773438,257.61627197265625 165.83056640625,285.0002136230469 179.92138671875,240.69207763671875 143.03115844726562,213.30812072753906 188.6299591064453,213.30812072753906" style="transform-box: fill-box;" transform="scale(0.047, 0.047)">
+        <animateTransform attributeName="transform" type="scale" begin="-0.00001" dur="3.00002" keyTimes="0; 0.16066666666666665; 0.33666666666666667; 0.5766666666666667; 1" values="20;0;20;0;20" fill="freeze" additive="sum" calcMode="spline" keySplines="0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1">
+        </animateTransform>
+    </polygon>
+</svg>

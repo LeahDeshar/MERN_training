@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" data-app="Xyris">
+    <defs>
+    </defs>
+    <ellipse fill="#6B67FD" stroke="#000000" stroke-width="0" transform-origin="center" cx="216.4" cy="201.552" rx="23.2369" ry="27.3574" style="transform-box: fill-box;" transform="">
+        <animateTransform attributeName="transform" type="translate" begin="-0.00001" dur="3.00002" keyTimes="0; 0.3313333333333333; 0.6646666666666666; 1" values="0, 0;0, -15;0, -5.01498;0, -15" fill="freeze" additive="sum" calcMode="spline" keySplines="0 0 1 1; 0 0 1 1; 0 0 1 1">
+        </animateTransform>
+    </ellipse>
+</svg>

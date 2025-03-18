@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #121919;
+  --background: #222222;
   --foreground: #171717;
 }
 
@@ -9,8 +9,8 @@
   /* --color-*: initial; */
   --color-white: #fff;
   --color-purple: #3f3cbb;
-  --color-primary: #121919;
-  --color-background: #121919;
+  --color-primary: #222222;
+  --color-background: #222222;
   --color-secondary: #78dcca;
   --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
   --ease-snappy: cubic-bezier(0.2, 0, 0, 1);

@@ -29,7 +29,7 @@ export default function RootLayout({
       >
         <div className=" bg-background"></div>
 
-        {children}
+        <div>{children}</div>
       </body>
     </html>
   );

@@ -1,18 +1,26 @@
-import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
+import { connectDB } from "./db";
+import { User } from "@/models/User";
 
-/**
- * Verifies the authenticity of a JWT token.
- * @param token - The JWT token to verify.
- * @returns `true` if valid, otherwise `false`.
- */
-export function verifyToken(token: string): boolean {
-  try {
-    jwt.verify(token.replace("Bearer ", ""), SECRET_KEY);
-    return true;
-  } catch (error: any) {
-    console.error("Invalid token:", error.message);
-    return false;
+export async function verifyUser(email: string, password: string) {
+  await connectDB();
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return null;
   }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return null;
+  }
+
+  return {
+    id: user._id.toString(),
+    email: user.email,
+    name: user.name,
+  };
 }

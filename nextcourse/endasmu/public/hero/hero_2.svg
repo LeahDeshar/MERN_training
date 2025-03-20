@@ -1,28 +1,17 @@
-<svg width="1704" height="739" viewBox="0 0 1704 739" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g opacity="0.54" filter="url(#filter0_f_115_921)">
-<circle cx="817.524" cy="121.069" r="224.524" fill="#517b80"/>
-</g>
-<!-- <g opacity="0.34" filter="url(#filter1_f_115_921)">
-<circle cx="1077.58" cy="311.69" r="123.42" fill="#00DC89"/>
-</g> -->
-<!-- <g opacity="0.24" filter="url(#filter2_f_115_921)">
-<circle cx="377.676" cy="299" r="173.699" fill="#A63BEE"/>
-</g> -->
-<defs>
-<filter id="filter0_f_115_921" x="0.184464" y="-46.2706" width="674.679" height="674.679" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="106.408" result="effect1_foregroundBlur_115_921"/>
-</filter>
-<filter id="filter1_f_115_921" x="451.345" y="-14.5448" width="652.471" height="652.47" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="106.408" result="effect1_foregroundBlur_115_921"/>
-</filter>
-<filter id="filter2_f_115_921" x="137.958" y="-140.718" width="879.436" height="879.436" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="133.01" result="effect1_foregroundBlur_115_921"/>
-</filter>
-</defs>
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Define a radial gradient -->
+    <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#88d2da;stop-opacity:0.35" />
+      <stop offset="100%" style="stop-color:#88d2da;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Define a Gaussian blur filter -->
+    <filter id="blurFilter" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+    </filter>
+  </defs>
+
+  <!-- Apply the gradient and blur -->
+  <circle cx="200" cy="200" r="200" fill="url(#grad1)" filter="url(#blurFilter)" />
 </svg>

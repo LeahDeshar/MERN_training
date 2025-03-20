@@ -17,7 +17,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push("/dashboard"); // Redirect after login
+      router.push("/"); // Redirect after login
     } else {
       alert("Invalid credentials");
     }

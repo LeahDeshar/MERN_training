@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react"; // For loading spinner
+import { Loader2 } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";

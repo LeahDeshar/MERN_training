@@ -84,7 +84,11 @@ export default function Home() {
                 nesciunt, laboriosam excepturi repudiandae ducimus?
               </p>
               <div className="space-x-12  flex items-center">
-                <button className="rounded-full px-6 py-2 bg-gradient-to-r from-[#dfd056] via-[#bdc96f] via-50% to-[#98c475] text-black">
+                <button
+                  className="rounded-full px-6 py-2 bg-gradient-to-br from-[#36b3c9] via-[#2a8c9d] via-30% to-[#32ad5e] text-black"
+
+                  // className="rounded-full px-6 py-2 bg-gradient-to-r from-[#dfd056] via-[#bdc96f] via-30% to-[#81bd51] text-black"
+                >
                   Get Started
                 </button>
                 <button className="flex items-center">
@@ -104,7 +108,7 @@ export default function Home() {
             />
           </div> */}
             <Image
-              src="/hero/hero_1.png"
+              src="/hero/hero_5.png"
               width={500}
               height={500}
               alt="Hero Image"
@@ -134,11 +138,46 @@ export default function Home() {
             // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
           }}
         >
-          <h1 className="text-2xl font-bold text-white">Glassy Container</h1>
-          <p className="text-white mt-2">
-            This is a glassy container with a blurred background and
-            transparency.
-          </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl  text-white">Artwork</h1>
+              <p className="text-white mt-2 font-bold text-7xl">27k+</p>
+            </div>
+            <div>
+              <h1 className="text-2xl  text-white">Auction</h1>
+              <p className="text-white mt-2 font-bold text-7xl">25k+</p>
+            </div>
+            <div>
+              <h1 className="text-2xl text-white">Artist</h1>
+              <p className="text-white mt-2 font-bold text-7xl">12k+</p>
+            </div>
+            <div>
+              <div className="flex items-center gap-10">
+                <h2 className="text-lg text-white">Art</h2>
+                <p className="text-white font-bold text-3xl">3.4 ETH</p>
+              </div>
+              <div className="flex border border-white">
+                {[
+                  "/profiles/p1.jpg",
+                  "/profiles/p4.jpeg",
+                  "/profiles/p2.jpg",
+                  "/profiles/p3.jpeg",
+                  "/profiles/p3.jpeg",
+                  "/profiles/p3.jpeg",
+                ].map((img, index) => (
+                  <Image
+                    key={index}
+                    src={img}
+                    width={100}
+                    height={100}
+                    alt="Hero Image"
+                    objectFit="cover"
+                    className="rounded-full -ml-8 "
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
           <div className="absolute top-0 w-[200px] h-[200px] -z-40">
             <Image

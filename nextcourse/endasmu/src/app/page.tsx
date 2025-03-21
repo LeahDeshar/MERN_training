@@ -126,19 +126,17 @@ export default function Home() {
         </div>
       </main>
 
-      <div className="w-full  relative  px-4 lg:px-16">
+      <div className=" max-w-[88rem] w-full  relative  px-4 lg:px-16">
         <div
-          className="w-full rounded-lg p-6 relative h-96 "
+          className="mx-10 w-full rounded-4xl p-6 relative "
           style={{
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            backdropFilter: "blur(15px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(5px)",
 
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            // border: 1px solid rgba(255, 255, 255, 0.2),
-            // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
           }}
         >
-          <div className="flex justify-between items-center">
+          <div className="px-6 flex justify-between items-center py-10">
             <div>
               <h1 className="text-2xl  text-white">Artwork</h1>
               <p className="text-white mt-2 font-bold text-7xl">27k+</p>
@@ -156,24 +154,26 @@ export default function Home() {
                 <h2 className="text-lg text-white">Art</h2>
                 <p className="text-white font-bold text-3xl">3.4 ETH</p>
               </div>
-              <div className="flex border border-white">
+              <div className="flex mt-4 items-center">
                 {[
                   "/profiles/p1.jpg",
                   "/profiles/p4.jpeg",
                   "/profiles/p2.jpg",
                   "/profiles/p3.jpeg",
                   "/profiles/p3.jpeg",
-                  "/profiles/p3.jpeg",
                 ].map((img, index) => (
-                  <Image
+                  <div
                     key={index}
-                    src={img}
-                    width={100}
-                    height={100}
-                    alt="Hero Image"
-                    objectFit="cover"
-                    className="rounded-full -ml-8 "
-                  />
+                    className="relative  w-15  h-15 rounded-full bg-amber-300 -ml-3"
+                  >
+                    <Image
+                      src={img}
+                      layout="fill"
+                      alt="Profile Image"
+                      objectFit="cover"
+                      className="rounded-full "
+                    />
+                  </div>
                 ))}
               </div>
             </div>

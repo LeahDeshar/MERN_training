@@ -46,7 +46,7 @@ export default function Home() {
           backgroundImage: "url('/hero/hero.svg')",
         }}
       >
-        <nav className="fixed top-0 left-0 w-full bg-opacity-75  text-white p-4 px-5 lg:px-28">
+        <nav className="z-50 fixed top-0 left-0 w-full bg-opacity-75  text-white p-4 px-5 lg:px-28">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold">Endasmu</h1>
 
@@ -274,10 +274,9 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className=" text-white py-12 px-6 lg:px-28 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border border-white">
-          {/* Brand Section */}
-          <div>
+      <footer className="relative overflow-hidden text-white py-12 px-6 lg:px-28">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-2 ">
+          <div className="lg:col-span-2">
             <h1 className="text-2xl font-bold mb-4">Endasmu</h1>
             <p className="text-gray-400 text-sm">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa
@@ -286,19 +285,14 @@ export default function Home() {
             </p>
             {/* Social Media Icons */}
             <div className="flex space-x-4 mt-4">
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                {/* Replace with actual social media icons */}
-                <span>FB</span>
-              </div>
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                <span>TW</span>
-              </div>
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                <span>IG</span>
-              </div>
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                <span>LN</span>
-              </div>
+              {["FB", "TW", "IG", "LN"].map((icon, index) => (
+                <div
+                  key={index}
+                  className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center"
+                >
+                  <span>{icon}</span>
+                </div>
+              ))}
             </div>
             {/* Copyright */}
             <div className="mt-6">
@@ -308,8 +302,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Explore Section */}
-          <div>
+          <div className="justify-self-end">
             <h1 className="text-xl font-semibold mb-4">Explore</h1>
             {["Art", "Collections", "Domain Name", "Utility"].map(
               (item, index) => (
@@ -323,8 +316,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Statistic Section */}
-          <div>
+          <div className="justify-self-end">
             <h1 className="text-xl font-semibold mb-4">Statistic</h1>
             {["Ranking", "Activity"].map((item, index) => (
               <p
@@ -336,8 +328,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Resource Section */}
-          <div>
+          <div className="justify-self-end">
             <h1 className="text-xl font-semibold mb-4">Resource</h1>
             {["Help Center", "Platform Status", "Partners", "Blog", "Faq"].map(
               (item, index) => (
@@ -351,8 +342,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Company Section */}
-          <div>
+          <div className="justify-self-end">
             <h1 className="text-xl font-semibold mb-4">Company</h1>
             {["About us", "Career", "Support"].map((item, index) => (
               <p
@@ -363,6 +353,15 @@ export default function Home() {
               </p>
             ))}
           </div>
+        </div>
+
+        <div className="absolute top-0 opacity-70 -right-56 w-[500px] h-[500px] -z-40">
+          <Image
+            src="/hero/hero_2.svg"
+            layout="fill"
+            objectFit="cover"
+            alt="Hero Image"
+          />
         </div>
       </footer>
     </div>

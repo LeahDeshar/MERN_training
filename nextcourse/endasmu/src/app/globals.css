@@ -112,6 +112,23 @@
     }
   }
 }
+
+body {
+  cursor: none;
+}
+
+/* Dot (inner cursor) */
+#cursor-dot {
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* Circle (outer cursor) */
+#cursor-circle {
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease-out;
+}
+
 .radial-blur-background {
   position: fixed;
   top: 0;

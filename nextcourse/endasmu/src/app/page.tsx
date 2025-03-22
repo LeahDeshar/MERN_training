@@ -214,8 +214,9 @@ export default function Home() {
             </button>
           </div>
         </section>
-
-        <section className="flex items-center px-4 lg:px-16 gap-20 py-14">
+      </div>
+      <section className="px-4 lg:px-16  overflow-hidden relative  ">
+        <div className="px-4 lg:px-16 gap-20 py-14  flex items-center  ">
           <div className="text-white">
             <h1 className="text-lg font-semibold">Popular Item</h1>
             <div className="text-5xl font-bold mt-8 space-y-2">
@@ -237,11 +238,11 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 ">
             <ProfileCard />
             <ProfileCard />
           </div>
-          <div className="absolute  -left-56 w-[500px] h-[500px] -z-40">
+          <div className="absolute  -right-56 w-[500px] h-[500px] -z-40">
             <Image
               src="/hero/hero_2.svg"
               layout="fill"
@@ -249,8 +250,121 @@ export default function Home() {
               alt="Hero Image"
             />
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <section className="relative px-4 lg:px-28 gap-20 py-24">
+        <div className="text-white text-8xl  pt-14 pb-8">
+          <h1 className="my-5">Subscribe to Get Fresh </h1>
+          <h1 className="my-5">News Update About </h1>
+          <h1 className="my-5">NFTs.</h1>
+        </div>
+
+        <button className="rounded-full px-6 py-2 mt-5 bg-gradient-to-br from-[#36b3c9] via-[#2a8c9d] via-30% to-[#32ad5e] text-black text-lg">
+          Subscribe
+        </button>
+
+        <div className="absolute top-0  -left-72 w-[800px] h-[800px] -z-40">
+          <Image
+            src="/hero/hero_3.svg"
+            layout="fill"
+            objectFit="cover"
+            alt="Hero Image"
+          />
+        </div>
+      </section>
+
+      <footer className=" text-white py-12 px-6 lg:px-28 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border border-white">
+          {/* Brand Section */}
+          <div>
+            <h1 className="text-2xl font-bold mb-4">Endasmu</h1>
+            <p className="text-gray-400 text-sm">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              harum corporis, rem beatae voluptas vitae a odio perspiciatis odit
+              voluptatibus!
+            </p>
+            {/* Social Media Icons */}
+            <div className="flex space-x-4 mt-4">
+              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                {/* Replace with actual social media icons */}
+                <span>FB</span>
+              </div>
+              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                <span>TW</span>
+              </div>
+              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                <span>IG</span>
+              </div>
+              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                <span>LN</span>
+              </div>
+            </div>
+            {/* Copyright */}
+            <div className="mt-6">
+              <p className="text-gray-500 text-sm">
+                © 2021 Endasmu. All rights reserved
+              </p>
+            </div>
+          </div>
+
+          {/* Explore Section */}
+          <div>
+            <h1 className="text-xl font-semibold mb-4">Explore</h1>
+            {["Art", "Collections", "Domain Name", "Utility"].map(
+              (item, index) => (
+                <p
+                  key={index}
+                  className="text-gray-400 text-sm mb-2 hover:text-white"
+                >
+                  {item}
+                </p>
+              )
+            )}
+          </div>
+
+          {/* Statistic Section */}
+          <div>
+            <h1 className="text-xl font-semibold mb-4">Statistic</h1>
+            {["Ranking", "Activity"].map((item, index) => (
+              <p
+                key={index}
+                className="text-gray-400 text-sm mb-2 hover:text-white"
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+
+          {/* Resource Section */}
+          <div>
+            <h1 className="text-xl font-semibold mb-4">Resource</h1>
+            {["Help Center", "Platform Status", "Partners", "Blog", "Faq"].map(
+              (item, index) => (
+                <p
+                  key={index}
+                  className="text-gray-400 text-sm mb-2 hover:text-white"
+                >
+                  {item}
+                </p>
+              )
+            )}
+          </div>
+
+          {/* Company Section */}
+          <div>
+            <h1 className="text-xl font-semibold mb-4">Company</h1>
+            {["About us", "Career", "Support"].map((item, index) => (
+              <p
+                key={index}
+                className="text-gray-400 text-sm mb-2 hover:text-white"
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

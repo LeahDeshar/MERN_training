@@ -35,6 +35,8 @@
 import Button from "@/components/ui/Button";
 import { MoveRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -391,87 +393,13 @@ const ProfileCard = () => {
   );
 };
 
-// const Header = () => {
-//   const [isHidden, setIsHidden] = useState(false);
-//   const [isScrolled, setIsScrolled] = useState(false);
-//   const lastScrollY = useRef(0);
-//   const isThrottled = useRef(false);
-
-//   useEffect(() => {
-//     const initialScroll = window.scrollY > 44;
-//     setIsScrolled(initialScroll);
-//     lastScrollY.current = window.scrollY;
-//   }, []);
-
-//   useEffect(() => {
-//     const controlNavbar = () => {
-//       if (isThrottled.current) return;
-
-//       isThrottled.current = true;
-//       setTimeout(() => {
-//         const currentScrollY = window.scrollY;
-//         const headerTopHeight = 44;
-
-//         if (currentScrollY < headerTopHeight) {
-//           setIsHidden(false);
-//           setIsScrolled(false);
-//         } else if (currentScrollY > lastScrollY.current) {
-//           setIsHidden(true);
-//         } else {
-//           setIsHidden(false);
-//         }
-
-//         setIsScrolled(true);
-//         lastScrollY.current = currentScrollY;
-
-//         isThrottled.current = false;
-//       }, 100); // Throttle interval for smoother performance
-//     };
-
-//     window.addEventListener("scroll", controlNavbar);
-//     return () => window.removeEventListener("scroll", controlNavbar);
-//   }, []);
-
-//   return (
-//     <nav
-//       className={`z-50 fixed top-0 left-0 w-full p-4 px-5 lg:px-28 transition-transform duration-300 ${
-//         isHidden ? "-translate-y-full" : "translate-y-0"
-//       } ${
-//         isScrolled ? "bg-gray-900 bg-opacity-90 shadow-lg" : "bg-transparent"
-//       }`}
-//     >
-//       <div className="flex items-center justify-between">
-//         <h1 className="text-lg font-bold">Endasmu</h1>
-
-//         <div>
-//           <ul className="flex space-x-4">
-//             <li>
-//               <a href="#">Collection</a>
-//             </li>
-//             <li>
-//               <a href="#">Market Place</a>
-//             </li>
-//             <li>
-//               <a href="#">Community</a>
-//             </li>
-//             <li>
-//               <a href="#">Connect Wallet</a>
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
 const Header = () => {
   const [isHidden, setIsHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollY = useRef(0);
   const isThrottled = useRef(false);
-
+  const router = useRouter();
   useEffect(() => {
-    // Set initial scroll state
     const initialScroll = window.scrollY > 44;
     setIsScrolled(initialScroll);
     lastScrollY.current = window.scrollY;
@@ -507,7 +435,10 @@ const Header = () => {
     window.addEventListener("scroll", controlNavbar);
     return () => window.removeEventListener("scroll", controlNavbar);
   }, []);
-
+  const isActive = (path: string) => {
+    // Check if the current path matches the link's path
+    return router.asPath === path;
+  };
   return (
     <nav
       className={`z-50 fixed top-0 left-0 w-full p-4 px-5 lg:px-28 transition-transform duration-300 ${
@@ -519,21 +450,59 @@ const Header = () => {
       }`}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold">Endasmu</h1>
+        <h1 className="text-lg font-bold">
+          <Link href="/">Endasmu</Link>
+        </h1>
 
         <div>
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-7">
             <li>
-              <a href="#">Collection</a>
+              <Link
+                href="/collection"
+                className={`${
+                  isActive("/collection")
+                    ? "text-blue-500 font-semibold"
+                    : "text-white"
+                }`}
+              >
+                Collection
+              </Link>
             </li>
             <li>
-              <a href="#">Market Place</a>
+              <Link
+                href="/marketplace"
+                className={`${
+                  isActive("/marketplace")
+                    ? "text-blue-500 font-semibold"
+                    : "text-white"
+                }`}
+              >
+                Market Place
+              </Link>
             </li>
             <li>
-              <a href="#">Community</a>
+              <Link
+                href="/community"
+                className={`${
+                  isActive("/community")
+                    ? "text-blue-500 font-semibold"
+                    : "text-white"
+                }`}
+              >
+                Community
+              </Link>
             </li>
             <li>
-              <a href="#">Connect Wallet</a>
+              <Link
+                href="/connect-wallet"
+                className={`${
+                  isActive("/connect-wallet")
+                    ? "text-blue-500 font-semibold"
+                    : "text-white"
+                }`}
+              >
+                Connect Wallet
+              </Link>
             </li>
           </ul>
         </div>

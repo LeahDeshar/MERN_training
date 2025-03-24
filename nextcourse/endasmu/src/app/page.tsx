@@ -35,6 +35,7 @@
 import Button from "@/components/ui/Button";
 import { MoveRight } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   return (
@@ -46,29 +47,7 @@ export default function Home() {
           backgroundImage: "url('/hero/hero.svg')",
         }}
       >
-        <nav className="z-50 fixed top-0 left-0 w-full bg-opacity-75  text-white p-4 px-5 lg:px-28">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-bold">Endasmu</h1>
-
-            <div>
-              <ul className="flex space-x-4">
-                <li>
-                  <a href="#">Collection</a>
-                </li>
-                <li>
-                  <a href="#">Market Place</a>
-                </li>
-                <li>
-                  <a href="#">Community</a>
-                </li>
-                <li>
-                  <a href="#">Connect Wallet</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
+        <Header />
         <div className="grid grid-cols-2   px-10 ">
           <div className="text-white">
             <div>
@@ -409,5 +388,156 @@ const ProfileCard = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// const Header = () => {
+//   const [isHidden, setIsHidden] = useState(false);
+//   const [isScrolled, setIsScrolled] = useState(false);
+//   const lastScrollY = useRef(0);
+//   const isThrottled = useRef(false);
+
+//   useEffect(() => {
+//     const initialScroll = window.scrollY > 44;
+//     setIsScrolled(initialScroll);
+//     lastScrollY.current = window.scrollY;
+//   }, []);
+
+//   useEffect(() => {
+//     const controlNavbar = () => {
+//       if (isThrottled.current) return;
+
+//       isThrottled.current = true;
+//       setTimeout(() => {
+//         const currentScrollY = window.scrollY;
+//         const headerTopHeight = 44;
+
+//         if (currentScrollY < headerTopHeight) {
+//           setIsHidden(false);
+//           setIsScrolled(false);
+//         } else if (currentScrollY > lastScrollY.current) {
+//           setIsHidden(true);
+//         } else {
+//           setIsHidden(false);
+//         }
+
+//         setIsScrolled(true);
+//         lastScrollY.current = currentScrollY;
+
+//         isThrottled.current = false;
+//       }, 100); // Throttle interval for smoother performance
+//     };
+
+//     window.addEventListener("scroll", controlNavbar);
+//     return () => window.removeEventListener("scroll", controlNavbar);
+//   }, []);
+
+//   return (
+//     <nav
+//       className={`z-50 fixed top-0 left-0 w-full p-4 px-5 lg:px-28 transition-transform duration-300 ${
+//         isHidden ? "-translate-y-full" : "translate-y-0"
+//       } ${
+//         isScrolled ? "bg-gray-900 bg-opacity-90 shadow-lg" : "bg-transparent"
+//       }`}
+//     >
+//       <div className="flex items-center justify-between">
+//         <h1 className="text-lg font-bold">Endasmu</h1>
+
+//         <div>
+//           <ul className="flex space-x-4">
+//             <li>
+//               <a href="#">Collection</a>
+//             </li>
+//             <li>
+//               <a href="#">Market Place</a>
+//             </li>
+//             <li>
+//               <a href="#">Community</a>
+//             </li>
+//             <li>
+//               <a href="#">Connect Wallet</a>
+//             </li>
+//           </ul>
+//         </div>
+//       </div>
+//     </nav>
+//   );
+// };
+
+const Header = () => {
+  const [isHidden, setIsHidden] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const lastScrollY = useRef(0);
+  const isThrottled = useRef(false);
+
+  useEffect(() => {
+    // Set initial scroll state
+    const initialScroll = window.scrollY > 44;
+    setIsScrolled(initialScroll);
+    lastScrollY.current = window.scrollY;
+  }, []);
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (isThrottled.current) return;
+
+      isThrottled.current = true;
+      setTimeout(() => {
+        const currentScrollY = window.scrollY;
+        const headerTopHeight = 44;
+
+        if (currentScrollY < headerTopHeight) {
+          setIsHidden(false);
+          setIsScrolled(false);
+        } else if (currentScrollY > lastScrollY.current) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
+
+        if (currentScrollY >= headerTopHeight) {
+          setIsScrolled(true);
+        }
+
+        lastScrollY.current = currentScrollY;
+        isThrottled.current = false;
+      }, 100);
+    };
+
+    window.addEventListener("scroll", controlNavbar);
+    return () => window.removeEventListener("scroll", controlNavbar);
+  }, []);
+
+  return (
+    <nav
+      className={`z-50 fixed top-0 left-0 w-full p-4 px-5 lg:px-28 transition-transform duration-300 ${
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      } ${
+        isScrolled
+          ? "bg-background/70 bg-opacity-90 shadow-lg"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-bold">Endasmu</h1>
+
+        <div>
+          <ul className="flex space-x-4">
+            <li>
+              <a href="#">Collection</a>
+            </li>
+            <li>
+              <a href="#">Market Place</a>
+            </li>
+            <li>
+              <a href="#">Community</a>
+            </li>
+            <li>
+              <a href="#">Connect Wallet</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 };

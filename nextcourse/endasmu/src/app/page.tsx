@@ -1,36 +1,3 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import Loading from "./loading";
-// import Image from "next/image";
-
-// export default function Home() {
-//   return (
-//     <div className="bg-background font-sans relative">
-//       <div className="w-96 h-full border-2  absolute">
-//         <div className="radial-blur-background"></div>
-//         <div className="radial-blur-background-2"></div>
-//       </div>
-//       <div>
-//         <div className="grid grid-cols-2">
-//           <div className="">
-//             <h1>Title and description</h1>
-//           </div>
-//           <div className="">
-//             <Image
-//               src="/hero/img_2.png"
-//               // layout="fill"
-//               objectFit="cover"
-//               height={100}
-//               width={100}
-//               alt="background"
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import Button from "@/components/ui/Button";
 import { MoveRight } from "lucide-react";
@@ -41,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   return (
-    // className="relative min-h-screen bg-background font-sans"
     <div className="">
       <main
         className="relative bg-cover bg-center bg-no-repeat px-4 lg:px-16 py-14 sm:py-24 text-white min-h-screen flex flex-col justify-center overflow-hidden"
@@ -109,7 +75,10 @@ export default function Home() {
 
       <div className=" max-w-[88rem] w-full  relative  px-4 lg:px-16">
         <div className="isolate  bg-white/5 shadow-sm shadow-amber-50 ring-1 ring-black/5 mx-10 w-full rounded-4xl p-6 relative">
-          <div className="px-6 flex justify-between items-center py-10">
+          <div
+            // className="px-6 flex justify-between items-center py-10"
+            className="px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center py-10 gap-8 "
+          >
             <div>
               <h1 className="text-2xl  text-white">Artwork</h1>
               <p className="text-white mt-2 font-bold text-7xl">27k+</p>
@@ -162,8 +131,13 @@ export default function Home() {
           </div>
         </div>
 
-        <section className="flex items-center px-4 lg:px-16 gap-20 py-24">
-          <div>
+        <section
+          // className="flex items-center px-4 lg:px-16 gap-20 py-24"
+          // className="flex flex-col-reverse md:flex-row  items-center border border-white px-6 lg:px-16 gap-10 md:gap-20 py-12 sm:py-24"
+
+          className="flex flex-col-reverse md:flex-row  items-center border border-white px-6 lg:px-16 gap-10 md:gap-20 py-12 sm:py-24"
+        >
+          <div className="flex justify-center md:justify-start">
             <Image
               src="/profiles/group_img.svg"
               alt="Hero Image"
@@ -173,9 +147,9 @@ export default function Home() {
             />
           </div>
 
-          <div className="text-white">
+          <div className="text-white ">
             <h1 className="text-lg font-semibold">Popular Item</h1>
-            <div className="text-5xl font-bold mt-8 space-y-2">
+            <div className="sm:text-2xl text-4xl lg:text-5xl font-bold mt-8 space-y-2">
               <p>Hot Trending</p>
               <p>On This</p>
               <p>Week.</p>

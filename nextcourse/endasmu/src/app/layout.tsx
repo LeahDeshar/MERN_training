@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Cursor from "@/components/ui/Cursor";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +30,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="relative smooth-scroll">
+        <div className=" smooth-scroll">
           <div className=" bg-background"></div>
+          <Header />
           {/* <div className="fixed inset-0 bg-gradient-to-r from-[#e7d954] via-[#222222] via-30% to-[#041f04]"></div> */}
           {/* <div className="fixed inset-0 bg-gradient-to-r from-[#f4e45558] via-[#222222] via-30% to-[#222222]"></div> */}
           {/* <div className="fixed inset-0 bg-gradient-to-br from-[#29622a55] via-[#12282cf5] via-15% to-[#295a62f5]"></div> */}
           <Cursor />
           <div>{children}</div>
+          {/* <Footer /> */}
         </div>
       </body>
     </html>
